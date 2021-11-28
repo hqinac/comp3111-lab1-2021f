@@ -64,21 +64,34 @@ import javafx.scene.control.Alert.AlertType;
 <span class="nc" id="L64">        ccb_Ta.getItems().clear();</span>
 <span class="nc" id="L65">        GenerateTableA.selectedDataset = GlobalDataSet.dataSetTableA;</span>
 <span class="nc bnc" id="L66" title="All 2 branches missed.">        if (GenerateTableA.isDateValid(selectedDate)) {</span>
-<span class="nc" id="L67">            GenerateTableA.selectedDate = selectedDate;</span>
-<span class="nc" id="L68">            GenerateTableA.setCountryNameList();</span>
-<span class="nc" id="L69">            ObservableList&lt;String&gt; strings = FXCollections.observableArrayList(GenerateTableA.countryNameList);</span>
+        	
+        	//delete the beginning 0 at mm and dd
+        	
+<span class="nc" id="L70">        	String[] stringArray = selectedDate.split(&quot;/&quot;);</span>
+<span class="nc bnc" id="L71" title="All 2 branches missed.">        	if (stringArray[0].charAt(0) == '0') {</span>
+<span class="nc" id="L72">        		stringArray[0] = stringArray[0].substring(1);</span>
+        	}
+<span class="nc bnc" id="L74" title="All 2 branches missed.">        	if (stringArray[1].charAt(0) == '0') {</span>
+<span class="nc" id="L75">        		stringArray[1] = stringArray[1].substring(1);</span>
+        	}
+        	
+<span class="nc" id="L78">        	selectedDate = stringArray[0]+&quot;/&quot;+stringArray[1]+&quot;/&quot;+stringArray[2];</span>
+        	
+<span class="nc" id="L80">            GenerateTableA.selectedDate = selectedDate;</span>
+<span class="nc" id="L81">            GenerateTableA.setCountryNameList();</span>
+<span class="nc" id="L82">            ObservableList&lt;String&gt; strings = FXCollections.observableArrayList(GenerateTableA.countryNameList);</span>
 
-<span class="nc" id="L71">            ccb_Ta.getItems().addAll(strings);</span>
-<span class="nc" id="L72">            tf_date_Ta.setEditable(false);</span>
-<span class="nc" id="L73">            GenerateTableA.enterDate();</span>
-<span class="nc" id="L74">        } else {</span>
-<span class="nc" id="L75">            Alert a = new Alert(AlertType.NONE);</span>
-<span class="nc" id="L76">            a.setAlertType(AlertType.ERROR);</span>
-<span class="nc" id="L77">            a.setContentText(&quot;Sorry, the format of date is invalid.&quot;);</span>
-<span class="nc" id="L78">            a.show();</span>
-<span class="nc" id="L79">            return;</span>
+<span class="nc" id="L84">            ccb_Ta.getItems().addAll(strings);</span>
+<span class="nc" id="L85">            tf_date_Ta.setEditable(false);</span>
+<span class="nc" id="L86">            GenerateTableA.enterDate();</span>
+<span class="nc" id="L87">        } else {</span>
+<span class="nc" id="L88">            Alert a = new Alert(AlertType.NONE);</span>
+<span class="nc" id="L89">            a.setAlertType(AlertType.ERROR);</span>
+<span class="nc" id="L90">            a.setContentText(&quot;Sorry, the format of date is invalid.&quot;);</span>
+<span class="nc" id="L91">            a.show();</span>
+<span class="nc" id="L92">            return;</span>
         }
-<span class="nc" id="L81">    }</span>
+<span class="nc" id="L94">    }</span>
 
     /**
      * click the Reset button to edit date
@@ -87,11 +100,14 @@ import javafx.scene.control.Alert.AlertType;
     @FXML
     void doResetTa(ActionEvent event) {
 
-<span class="nc" id="L90">        tf_date_Ta.setEditable(true);</span>
-<span class="nc" id="L91">        tf_date_Ta.setText(&quot;&quot;);</span>
-<span class="nc" id="L92">        GenerateTableA.enteredDate = false;</span>
+<span class="nc" id="L103">        tf_date_Ta.setEditable(true);</span>
+<span class="nc" id="L104">        tf_date_Ta.setText(&quot;&quot;);</span>
+<span class="nc" id="L105">        GenerateTableA.enteredDate = false;</span>
+<span class="nc" id="L106">        ccb_Ta.getCheckModel().clearChecks();</span>
+<span class="nc" id="L107">        ccb_Ta.getItems().clear();</span>
+<span class="nc" id="L108">        GenerateTableA.errMsg = &quot;&quot;;</span>
 
-<span class="nc" id="L94">    }</span>
+<span class="nc" id="L110">    }</span>
 
     /**
      * click Generate Table button to create Table of task  A
@@ -102,26 +118,26 @@ import javafx.scene.control.Alert.AlertType;
      */
     @FXML
     void doSearchTableA(ActionEvent event) {
-<span class="nc bnc" id="L105" title="All 2 branches missed.">        if (!GenerateTableA.enteredDate) {</span>
-<span class="nc" id="L106">            Alert a = new Alert(AlertType.NONE);</span>
-<span class="nc" id="L107">            a.setAlertType(AlertType.ERROR);</span>
-<span class="nc" id="L108">            a.setContentText(&quot;Sorry, please check Date first.&quot;);</span>
-<span class="nc" id="L109">            a.show();</span>
-<span class="nc" id="L110">            return;</span>
+<span class="nc bnc" id="L121" title="All 2 branches missed.">        if (!GenerateTableA.enteredDate) {</span>
+<span class="nc" id="L122">            Alert a = new Alert(AlertType.NONE);</span>
+<span class="nc" id="L123">            a.setAlertType(AlertType.ERROR);</span>
+<span class="nc" id="L124">            a.setContentText(&quot;Sorry, please check Date first.&quot;);</span>
+<span class="nc" id="L125">            a.show();</span>
+<span class="nc" id="L126">            return;</span>
         }
-<span class="nc" id="L112">        GenerateTableA.selectedCountryList = ccb_Ta.getCheckModel().getCheckedItems();</span>
-<span class="nc" id="L113">        GenerateTableA.setDataList();</span>
-<span class="nc" id="L114">        GenerateTableA.setToPrintList();</span>
-<span class="nc" id="L115">        GenerateTableA.createTable();</span>
-<span class="nc bnc" id="L116" title="All 2 branches missed.">        if (!GenerateTableA.errMsg.equals(&quot;&quot;)) {</span>
-<span class="nc" id="L117">            Alert a = new Alert(AlertType.NONE);</span>
-<span class="nc" id="L118">            a.setAlertType(AlertType.WARNING);</span>
-<span class="nc" id="L119">            a.setContentText(&quot;The country(s) only has the information of the following period(s)\n&quot;</span>
+<span class="nc" id="L128">        GenerateTableA.selectedCountryList = ccb_Ta.getCheckModel().getCheckedItems();</span>
+<span class="nc" id="L129">        GenerateTableA.setDataList();</span>
+<span class="nc" id="L130">        GenerateTableA.setToPrintList();</span>
+<span class="nc" id="L131">        GenerateTableA.createTable();</span>
+<span class="nc bnc" id="L132" title="All 2 branches missed.">        if (!GenerateTableA.errMsg.equals(&quot;&quot;)) {</span>
+<span class="nc" id="L133">            Alert a = new Alert(AlertType.NONE);</span>
+<span class="nc" id="L134">            a.setAlertType(AlertType.WARNING);</span>
+<span class="nc" id="L135">            a.setContentText(&quot;The country(s) only has the information of the following period(s)\n&quot;</span>
                     + GenerateTableA.errMsg + &quot;\0&quot;);
-<span class="nc" id="L121">            a.show();</span>
+<span class="nc" id="L137">            a.show();</span>
         }
 
-<span class="nc" id="L124">    }</span>
+<span class="nc" id="L140">    }</span>
 
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105040129</span></div></body></html>
