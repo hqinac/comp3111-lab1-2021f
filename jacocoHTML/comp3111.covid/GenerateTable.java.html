@@ -1,0 +1,316 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="zh"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>GenerateTable.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">deCOVID</a> &gt; <a href="index.source.html" class="el_package">comp3111.covid</a> &gt; <span class="el_source">GenerateTable.java</span></div><h1>GenerateTable.java</h1><pre class="source lang-java linenums">package comp3111.covid;
+
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.Calendar;
+import java.text.SimpleDateFormat;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.io.File;
+import java.util.regex.Pattern;
+import java.util.regex.Matcher;
+
+import org.apache.commons.csv.CSVParser;
+import org.apache.commons.csv.CSVRecord;
+
+import edu.duke.FileResource;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+import javafx.geometry.Insets;
+import javafx.geometry.Side;
+import javafx.scene.Group;
+import javafx.scene.Scene;
+import javafx.scene.chart.CategoryAxis;
+import javafx.scene.chart.LineChart;
+import javafx.scene.chart.NumberAxis;
+import javafx.scene.chart.XYChart;
+import javafx.scene.control.Label;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
+import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.layout.VBox;
+import javafx.scene.text.Font;
+import javafx.stage.Stage;
+
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.Calendar;
+import java.text.SimpleDateFormat;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.io.File;
+import java.util.regex.Pattern;
+import java.util.regex.Matcher;
+
+import org.apache.commons.csv.CSVParser;
+import org.apache.commons.csv.CSVRecord;
+
+import edu.duke.FileResource;
+import javafx.geometry.Insets;
+import javafx.geometry.Side;
+
+/**
+ * Generate Table for all the three tasks. 
+ * @author ZHONG, Yingqi
+ *
+ */
+
+public class GenerateTable{
+<span class="fc" id="L59">	public String selectedDataset = &quot;&quot;;</span>
+<span class="fc" id="L60">	public String selectedDate = &quot;&quot;;</span>
+	private int taskNumber;
+<span class="fc" id="L62">	public ArrayList&lt;String&gt; countryNameList = new ArrayList&lt;String&gt;();</span>
+<span class="fc" id="L63">	public boolean enteredDate = false;</span>
+	public ObservableList selectedCountryList; 
+	public ArrayList&lt;DailyIncident&gt;[] dataList;
+<span class="fc" id="L66">	public ArrayList&lt;RowDisplay&gt; toPrintList = new ArrayList&lt;RowDisplay&gt;();</span>
+<span class="fc" id="L67">	public String errMsg = &quot;&quot;;</span>
+	
+	
+	/**
+	 * Initiallizer 
+	 * @param task task integer, 1 means taskA, 2 means taskB and 3 means taskC.
+	 */
+<span class="fc" id="L74">	public GenerateTable(int task) {</span>
+<span class="fc" id="L75">		taskNumber = task;</span>
+<span class="fc" id="L76">		errMsg = &quot;&quot;;</span>
+<span class="fc" id="L77">	}</span>
+	
+	/**
+	 * define a {@code CSVParser} to achieve the csv file
+	 * @param dataset name of the csv file in string
+	 * @return {@code CSVParser}
+	 */
+	public CSVParser getFileParser(String dataset) {
+<span class="fc" id="L85">	     FileResource fr = new FileResource(&quot;dataset/&quot; + dataset);</span>
+<span class="fc" id="L86">	     return fr.getCSVParser(true);</span>
+		}
+	
+	
+
+	/**
+	 * check whether the input date is valid for using.
+	 * @param date date of interest in {@code string}
+	 * @return true if valid, false if invalid
+	 */
+	public boolean isDateValid(String date) {
+<span class="fc" id="L97">		Pattern p = Pattern.compile(&quot;(\\d){1,2}\\/(\\d){1,2}\\/(\\d){4}&quot;);</span>
+<span class="fc" id="L98">		Matcher m = p.matcher(date);</span>
+<span class="fc" id="L99">		return m.matches();</span>
+
+	}
+	
+	/**
+	 * used after a valid date is input and checked, to make sure that the date cannot be changed before reset.
+	 */
+<span class="fc" id="L106">	public void enterDate() {enteredDate = true; }</span>
+	
+	/**
+	 * read the csv file to collect all the country names.
+	 */
+	public void setCountryNameList()
+	{
+<span class="fc" id="L113">		countryNameList.clear();</span>
+		
+<span class="fc" id="L115">		String str = &quot;NA&quot;;</span>
+		
+<span class="fc bfc" id="L117" title="All 2 branches covered.">		for (CSVRecord rec : getFileParser(selectedDataset)) </span>
+		{
+<span class="fc" id="L119">			String countryName = rec.get(&quot;location&quot;);</span>
+<span class="fc bfc" id="L120" title="All 2 branches covered.">			if(!countryName.equals(str))</span>
+			{
+<span class="fc" id="L122">				countryNameList.add(countryName);</span>
+<span class="fc" id="L123">				str = countryName;</span>
+			}
+<span class="fc" id="L125">		}</span>
+<span class="fc" id="L126">	}</span>
+	
+	/**
+	 * collected the {@code DailyIncident}s of selected location.
+	 */
+	public void setDataList()
+	{
+<span class="fc" id="L133">		int dataListSize = selectedCountryList.size();</span>
+<span class="fc" id="L134">		dataList = new ArrayList[dataListSize];</span>
+		
+<span class="fc bfc" id="L136" title="All 2 branches covered.">		for(int i=0;i&lt;dataListSize;i++)</span>
+		{
+<span class="fc" id="L138">			dataList[i] = new ArrayList&lt;DailyIncident&gt;();</span>
+		}
+		
+<span class="fc" id="L141">		int i=0;</span>
+		
+<span class="fc bfc" id="L143" title="All 2 branches covered.">		for (CSVRecord rec : getFileParser(selectedDataset)) </span>
+		{
+<span class="fc bfc" id="L145" title="All 4 branches covered.">			if(dataList[i].size()!=0&amp;&amp;!rec.get(&quot;location&quot;).equals(selectedCountryList.get(i).toString()))</span>
+			{
+<span class="pc bpc" id="L147" title="1 of 2 branches missed.">				if(i==dataListSize-1)</span>
+				{
+<span class="nc" id="L149">					break;</span>
+				}else
+				{
+<span class="fc" id="L152">					i++;</span>
+				}
+			}
+			
+<span class="pc bpc" id="L156" title="1 of 2 branches missed.">			if(rec.get(&quot;location&quot;).equals(selectedCountryList.get(i).toString()))</span>
+			{
+<span class="fc" id="L158">				dataList[i].add(new DailyIncident(</span>
+<span class="fc bfc" id="L159" title="All 2 branches covered.">					      rec.get(&quot;date&quot;).isEmpty()?&quot;0/0/0000&quot;:rec.get(&quot;date&quot;),</span>
+<span class="fc bfc" id="L160" title="All 2 branches covered.">					      rec.get(&quot;total_cases&quot;).isEmpty()?&quot;0&quot;:rec.get(&quot;total_cases&quot;),</span>
+<span class="fc bfc" id="L161" title="All 2 branches covered.">					      rec.get(&quot;total_cases_per_million&quot;).isEmpty()?&quot;0&quot;:rec.get(&quot;total_cases_per_million&quot;),</span>
+<span class="fc bfc" id="L162" title="All 2 branches covered.">					      rec.get(&quot;total_deaths&quot;).isEmpty()?&quot;0&quot;:rec.get(&quot;total_deaths&quot;),</span>
+<span class="fc bfc" id="L163" title="All 2 branches covered.">					      rec.get(&quot;total_deaths_per_million&quot;).isEmpty()?&quot;0&quot;:rec.get(&quot;total_deaths_per_million&quot;),</span>
+<span class="fc bfc" id="L164" title="All 2 branches covered.">					      rec.get(&quot;people_fully_vaccinated&quot;).isEmpty()?&quot;0&quot;:rec.get(&quot;people_fully_vaccinated&quot;),</span>
+<span class="fc bfc" id="L165" title="All 2 branches covered.">					      rec.get(&quot;people_vaccinated_per_hundred&quot;).isEmpty()?&quot;0&quot;:rec.get(&quot;people_vaccinated_per_hundred&quot;)</span>
+					     ));
+			}
+<span class="fc" id="L168">		}	</span>
+<span class="fc" id="L169">	}</span>
+	
+	/**
+	 * Choose the {@code DailyIncidents} of correct date of interest.
+	 */
+	public void setToPrintList()//1 2 3 for TableA TableB TableC
+	{
+<span class="fc" id="L176">		toPrintList.clear();</span>
+<span class="fc" id="L177">		int errMsgCount=0;</span>
+<span class="fc" id="L178">		errMsg = &quot;&quot;;</span>
+		
+<span class="fc bfc" id="L180" title="All 2 branches covered.">		for(int i=0;i&lt;(dataList.length);i++)</span>
+		{
+<span class="fc" id="L182">			String col1 = selectedCountryList.get(i).toString();</span>
+<span class="fc" id="L183">			String col2 = &quot;&quot;;</span>
+<span class="fc" id="L184">			String col3 = &quot;&quot;;</span>
+			
+<span class="fc bfc" id="L186" title="All 2 branches covered.">			if(stringToDate(selectedDate).before(stringToDate(dataList[i].get(0).getDate()))</span>
+<span class="fc bfc" id="L187" title="All 2 branches covered.">					||stringToDate(selectedDate).after(stringToDate(dataList[i].get(dataList[i].size()-1).getDate())))</span>
+			{
+<span class="fc" id="L189">				col2 = &quot;NA&quot;;</span>
+<span class="fc" id="L190">				col3 = &quot;NA&quot;;</span>
+<span class="fc" id="L191">				errMsg += selectedCountryList.get(i).toString()+&quot;: &quot;+</span>
+<span class="fc" id="L192">						&quot;from &quot;+dataList[i].get(0).getDate()+&quot; to &quot;+</span>
+<span class="fc" id="L193">						dataList[i].get(dataList[i].size()-1).getDate();</span>
+<span class="fc" id="L194">				errMsgCount++;</span>
+<span class="pc bpc" id="L195" title="1 of 2 branches missed.">				if(errMsgCount==1)</span>
+				{
+<span class="fc" id="L197">					errMsg += &quot;\n&quot;;</span>
+<span class="fc" id="L198">					errMsgCount=0;</span>
+				}
+				continue;		
+			}
+			
+<span class="pc bpc" id="L203" title="1 of 2 branches missed.">			for(int j=0;j&lt;dataList[i].size();j++)</span>
+			{
+<span class="fc bfc" id="L205" title="All 2 branches covered.">				if(dataList[i].get(j).getDate().equals(selectedDate))</span>
+				{
+<span class="fc bfc" id="L207" title="All 4 branches covered.">					switch(taskNumber)</span>
+					{
+						case 1:
+<span class="fc" id="L210">							col2 = dataList[i].get(j).getTotalCases();</span>
+<span class="fc" id="L211">							col3 = dataList[i].get(j).getTotalCasesPerMillion();</span>
+<span class="fc" id="L212">							break;</span>
+						case 2:
+<span class="fc" id="L214">							col2 = dataList[i].get(j).getTotalDeaths();</span>
+<span class="fc" id="L215">							col3 = dataList[i].get(j).getTotalDeathsPerMillion();</span>
+<span class="fc" id="L216">							break;</span>
+						case 3:
+<span class="fc" id="L218">							col2 = dataList[i].get(j).getPeopleFullyVaccinated();</span>
+<span class="fc" id="L219">							col3 = dataList[i].get(j).getPeopleVaccinatedPerHundred()+&quot;%&quot;;</span>
+							break;
+					}
+<span class="fc" id="L222">					break;</span>
+				}
+			}
+			
+<span class="fc" id="L226">			toPrintList.add(new RowDisplay(col1,col2,col3));		</span>
+		}
+<span class="fc" id="L228">	}</span>
+	
+	/**
+	 * create the chart of result using the selected {@code DailyIncident}s
+	 * for method of selection
+	 * @see #setDataList() and
+	 * @see #setToPrintList()
+	 */
+	public void createTable()
+	{
+<span class="nc" id="L238">		TableView&lt;RowDisplay&gt; table = new TableView&lt;RowDisplay&gt;();</span>
+<span class="nc" id="L239">		ObservableList&lt;RowDisplay&gt; data = FXCollections.observableArrayList(toPrintList);</span>
+		
+<span class="nc" id="L241">		String col2Name = &quot;&quot;;</span>
+<span class="nc" id="L242">		String col3Name = &quot;&quot;;</span>
+<span class="nc" id="L243">		Label label = new Label(&quot;Number of Confirmed COVID-19 Cases as of &quot;+selectedDate);</span>
+<span class="nc bnc" id="L244" title="All 4 branches missed.">		switch(taskNumber)</span>
+		{
+			case 1:
+<span class="nc" id="L247">				col2Name = &quot;Total Cases&quot;;</span>
+<span class="nc" id="L248">				col3Name = &quot;Total Cases Per Million&quot;;</span>
+<span class="nc" id="L249">				label = new Label(&quot;Number of Confirmed COVID-19 Cases as of &quot;+selectedDate);</span>
+<span class="nc" id="L250">				break;</span>
+			case 2:
+<span class="nc" id="L252">				col2Name = &quot;Total Deaths&quot;;</span>
+<span class="nc" id="L253">				col3Name = &quot;Total Deaths Per Million&quot;;</span>
+<span class="nc" id="L254">				label = new Label(&quot;Number of Death COVID-19 Cases as of &quot;+selectedDate);</span>
+<span class="nc" id="L255">				break;</span>
+			case 3:
+<span class="nc" id="L257">				col2Name = &quot;People Fully Vaccinated&quot;;</span>
+<span class="nc" id="L258">				col3Name = &quot;Vaccinated Rate&quot;;</span>
+<span class="nc" id="L259">				label = new Label(&quot;Number/Rate of Vaccinated COVID-19 Cases as of &quot;+selectedDate);</span>
+				break;
+		}
+		
+<span class="nc" id="L263">		Stage stage = new Stage();</span>
+<span class="nc" id="L264">		Scene scene = new Scene(new Group());</span>
+<span class="nc" id="L265">	    stage.setTitle(&quot;Table View&quot;);</span>
+<span class="nc" id="L266">	    stage.setWidth(350);</span>
+<span class="nc" id="L267">	    stage.setHeight(500);</span>
+<span class="nc" id="L268">	    label.setFont(new Font(&quot;Arial&quot;, 13));</span>
+	
+<span class="nc" id="L270">	    table.setEditable(false);</span>
+	
+<span class="nc" id="L272">	    TableColumn col1 = new TableColumn(&quot;Country&quot;);</span>
+	    //col1.setMinWidth(100);
+<span class="nc" id="L274">	    col1.setCellValueFactory(new PropertyValueFactory&lt;RowDisplay, String&gt;(&quot;firstCol&quot;)); </span>
+	
+<span class="nc" id="L276">	    TableColumn col2 = new TableColumn(col2Name);</span>
+	    //col2.setMinWidth(100);
+<span class="nc" id="L278">	    col2.setCellValueFactory(new PropertyValueFactory&lt;RowDisplay, String&gt;(&quot;secondCol&quot;));</span>
+	
+<span class="nc" id="L280">	    TableColumn col3 = new TableColumn(col3Name);</span>
+	    //col3.setMinWidth(200);
+<span class="nc" id="L282">	    col3.setCellValueFactory(new PropertyValueFactory&lt;RowDisplay, String&gt;(&quot;thirdCol&quot;));</span>
+	
+<span class="nc" id="L284">	    table.setItems(data);</span>
+<span class="nc" id="L285">	    table.getColumns().addAll(col1, col2, col3);</span>
+	
+<span class="nc" id="L287">	    final VBox vbox = new VBox();</span>
+<span class="nc" id="L288">	    vbox.setSpacing(5);</span>
+<span class="nc" id="L289">	    vbox.setPadding(new Insets(10, 0, 0, 10));</span>
+<span class="nc" id="L290">	    vbox.getChildren().addAll(label, table);</span>
+	
+<span class="nc" id="L292">	    ((Group) scene.getRoot()).getChildren().addAll(vbox);</span>
+	
+<span class="nc" id="L294">	    stage.setScene(scene);</span>
+<span class="nc" id="L295">	    stage.show(); </span>
+<span class="nc" id="L296">	}</span>
+	
+	/**
+	 * Transfer from {@code String} to {@code Date} object, used to make comparison between dates
+	 * @param str input date in {@date String}
+	 * @return {@code Date} object 
+	 */
+	public Date stringToDate(String str)
+	{
+<span class="fc" id="L305">		DateFormat df = new SimpleDateFormat(&quot;MM/dd/yyyy&quot;);</span>
+<span class="fc" id="L306">		Date date = null;</span>
+			try {
+<span class="fc" id="L308">	     		date = df.parse(str);</span>
+<span class="nc" id="L309">	 		} catch (ParseException e) {</span>
+<span class="nc" id="L310">	     		e.printStackTrace();</span>
+<span class="fc" id="L311">	    }</span>
+<span class="fc" id="L312">		return date;</span>
+	}
+	
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105040129</span></div></body></html>

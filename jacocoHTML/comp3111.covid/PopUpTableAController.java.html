@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="zh"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>PopUpTableAController.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">deCOVID</a> &gt; <a href="index.source.html" class="el_package">comp3111.covid</a> &gt; <span class="el_source">PopUpTableAController.java</span></div><h1>PopUpTableAController.java</h1><pre class="source lang-java linenums">package comp3111.covid;
+
+import javafx.event.ActionEvent;
+import javafx.fxml.FXML;
+
+import javafx.scene.layout.AnchorPane;
+import org.controlsfx.control.CheckComboBox;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+
+import javafx.application.Application;
+import javafx.scene.Scene;
+import javafx.scene.control.Button;
+import javafx.scene.layout.*;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
+import javafx.scene.control.*;
+import javafx.scene.control.Alert.AlertType;
+
+/**
+ * Controller of popUpTableA.fxml
+ * @author ZHONG,Yingqi
+ *
+ */
+<span class="nc" id="L25">public class PopUpTableAController {</span>
+
+<span class="nc" id="L27">    private GenerateTable GenerateTableA = new GenerateTable(1);</span>
+    @FXML
+    private Label L_popUp1_Ta;
+
+    @FXML
+    private Label L_popUp2_Ta;
+
+    @FXML
+    private Button b_check_Ta;
+
+    @FXML
+    private AnchorPane b_reSet_Ta;
+
+    @FXML
+    private Button b_reset_Ta;
+
+    @FXML
+    private Button b_search_Ta;
+
+    @FXML
+    private CheckComboBox&lt;String&gt; ccb_Ta;
+
+    @FXML
+    private TextField tf_date_Ta;
+
+    
+    /**
+     * Click the button of check date and initialize the country checkcombobox according to the dataset 
+     * if invalid date exists, create alert according to the situation.
+     * for reading country to build checkcombobox, read 
+     * @see GenerateTable#setCountryNameList()
+     * @param event operation on GUI
+     */
+    @FXML
+    void doCheckTableA(ActionEvent event) {
+<span class="nc" id="L62">        String selectedDate = tf_date_Ta.getText();</span>
+<span class="nc" id="L63">        ccb_Ta.setMaxWidth(200);</span>
+<span class="nc" id="L64">        ccb_Ta.getItems().clear();</span>
+<span class="nc" id="L65">        GenerateTableA.selectedDataset = GlobalDataSet.dataSetTableA;</span>
+<span class="nc bnc" id="L66" title="All 2 branches missed.">        if (GenerateTableA.isDateValid(selectedDate)) {</span>
+<span class="nc" id="L67">            GenerateTableA.selectedDate = selectedDate;</span>
+<span class="nc" id="L68">            GenerateTableA.setCountryNameList();</span>
+<span class="nc" id="L69">            ObservableList&lt;String&gt; strings = FXCollections.observableArrayList(GenerateTableA.countryNameList);</span>
+
+<span class="nc" id="L71">            ccb_Ta.getItems().addAll(strings);</span>
+<span class="nc" id="L72">            tf_date_Ta.setEditable(false);</span>
+<span class="nc" id="L73">            GenerateTableA.enterDate();</span>
+<span class="nc" id="L74">        } else {</span>
+<span class="nc" id="L75">            Alert a = new Alert(AlertType.NONE);</span>
+<span class="nc" id="L76">            a.setAlertType(AlertType.ERROR);</span>
+<span class="nc" id="L77">            a.setContentText(&quot;Sorry, the format of date is invalid.&quot;);</span>
+<span class="nc" id="L78">            a.show();</span>
+<span class="nc" id="L79">            return;</span>
+        }
+<span class="nc" id="L81">    }</span>
+
+    /**
+     * Click the Reset button to edit date
+     * @param event operation on GUI
+     */
+    @FXML
+    void doResetTa(ActionEvent event) {
+
+<span class="nc" id="L90">        tf_date_Ta.setEditable(true);</span>
+<span class="nc" id="L91">        tf_date_Ta.setText(&quot;&quot;);</span>
+<span class="nc" id="L92">        GenerateTableA.enteredDate = false;</span>
+
+<span class="nc" id="L94">    }</span>
+
+    /**
+     * Click Generate Table button to create Table of task  A
+     * create Alert if not checking date.
+     * create Alert with error message when the time of period is out of country data.
+     * for table creation, see {@link GenerateTable}
+     * @param event operation on GUI
+     */
+    @FXML
+    void doSearchTableA(ActionEvent event) {
+<span class="nc bnc" id="L105" title="All 2 branches missed.">        if (!GenerateTableA.enteredDate) {</span>
+<span class="nc" id="L106">            Alert a = new Alert(AlertType.NONE);</span>
+<span class="nc" id="L107">            a.setAlertType(AlertType.ERROR);</span>
+<span class="nc" id="L108">            a.setContentText(&quot;Sorry, please check Date first.&quot;);</span>
+<span class="nc" id="L109">            a.show();</span>
+<span class="nc" id="L110">            return;</span>
+        }
+<span class="nc" id="L112">        GenerateTableA.selectedCountryList = ccb_Ta.getCheckModel().getCheckedItems();</span>
+<span class="nc" id="L113">        GenerateTableA.setDataList();</span>
+<span class="nc" id="L114">        GenerateTableA.setToPrintList();</span>
+<span class="nc" id="L115">        GenerateTableA.createTable();</span>
+<span class="nc bnc" id="L116" title="All 2 branches missed.">        if (!GenerateTableA.errMsg.equals(&quot;&quot;)) {</span>
+<span class="nc" id="L117">            Alert a = new Alert(AlertType.NONE);</span>
+<span class="nc" id="L118">            a.setAlertType(AlertType.WARNING);</span>
+<span class="nc" id="L119">            a.setContentText(&quot;The country(s) only has the information of the following period(s)\n&quot;</span>
+                    + GenerateTableA.errMsg + &quot;\0&quot;);
+<span class="nc" id="L121">            a.show();</span>
+        }
+
+<span class="nc" id="L124">    }</span>
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105040129</span></div></body></html>

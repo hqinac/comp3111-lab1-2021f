@@ -1,0 +1,161 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="zh"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>PopUpChartBController.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">deCOVID</a> &gt; <a href="index.source.html" class="el_package">comp3111.covid</a> &gt; <span class="el_source">PopUpChartBController.java</span></div><h1>PopUpChartBController.java</h1><pre class="source lang-java linenums">package comp3111.covid;
+
+import javafx.event.ActionEvent;
+import javafx.fxml.FXML;
+
+import javafx.scene.layout.AnchorPane;
+import org.controlsfx.control.CheckComboBox;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+
+import javafx.application.Application;
+import javafx.scene.Scene;
+import javafx.scene.control.Button;
+import javafx.scene.layout.*;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
+import javafx.scene.control.*;
+import javafx.scene.control.Alert.AlertType;
+
+
+/**
+ * Controller of popUpChartB.fxml
+ * @author ZHANG,Hao
+ *
+ */
+<span class="nc" id="L26">public class PopUpChartBController {</span>
+
+<span class="nc" id="L28">	private GenerateChart GenerateChartB = new GenerateChart(2);</span>
+	
+    @FXML
+    private Label L_topUp1_Cb;
+
+    @FXML
+    private Label L_topUp2_Cb;
+
+    @FXML
+    private Label L_topUp3_Cb;
+
+    @FXML
+    private Label L_topUp4_Cb;
+
+    @FXML
+    private Button b_check_Cb;
+
+    @FXML
+    private Button b_reset_Cb;
+
+    @FXML
+    private Button b_search_Cb;
+
+    @FXML
+    private CheckComboBox&lt;String&gt; ccb_Cb;
+
+    @FXML
+    private TextField tf_enddate_Cb;
+
+    @FXML
+    private TextField tf_startdate_Cb;
+
+    
+    /**
+     * Click the button of check date and initialize the country checkcombobox according to the dataset 
+     * if invalid dates exist, create alert according to the situation.
+     * for reading country to build checkcombobox, read 
+     * @see GenerateChart#setCountryNameList()
+     * @param event Operation on GUI
+     */
+    @FXML
+    void doCheckChartB(ActionEvent event) {
+    	
+<span class="nc" id="L71">    	String selectedStartDate = tf_startdate_Cb.getText();</span>
+<span class="nc" id="L72">    	String selectedEndDate = tf_enddate_Cb.getText();</span>
+<span class="nc" id="L73">		ccb_Cb.setMaxWidth(200);</span>
+<span class="nc" id="L74">		ccb_Cb.getItems().clear();</span>
+<span class="nc" id="L75">		GenerateChartB.selectedDataset = GlobalDataSet.dataSetChartB;</span>
+		
+<span class="nc bnc" id="L77" title="All 4 branches missed.">		if(GenerateChartB.isDateValid(selectedStartDate) &amp;&amp; GenerateChartB.isDateValid(selectedEndDate))</span>
+    	{
+			
+<span class="nc" id="L80">			GenerateChartB.selectedStartDate = selectedStartDate;</span>
+<span class="nc" id="L81">			GenerateChartB.selectedEndDate = selectedEndDate;</span>
+<span class="nc" id="L82">			GenerateChartB.setCountryNameList();</span>
+<span class="nc" id="L83">    		ObservableList&lt;String&gt; strings = FXCollections.observableArrayList(GenerateChartB.countryNameList);</span>
+    		
+<span class="nc" id="L85">    		ccb_Cb.getItems().addAll(strings);</span>
+<span class="nc" id="L86">    		tf_startdate_Cb.setEditable(false);</span>
+<span class="nc" id="L87">    		tf_enddate_Cb.setEditable(false);</span>
+<span class="nc" id="L88">    		GenerateChartB.enterDates();</span>
+    		
+<span class="nc" id="L90">    	}else</span>
+    	{
+<span class="nc" id="L92">    		boolean startDate = GenerateChartB.isDateValid(selectedStartDate);</span>
+<span class="nc" id="L93">    		boolean endDate = GenerateChartB.isDateValid(selectedEndDate);</span>
+<span class="nc bnc" id="L94" title="All 4 branches missed.">    		if (!startDate &amp;&amp; !endDate) {</span>
+<span class="nc" id="L95">    			Alert a = new Alert(AlertType.NONE); </span>
+<span class="nc" id="L96">                a.setAlertType(AlertType.ERROR); </span>
+<span class="nc" id="L97">                a.setContentText(&quot;Sorry, the Start date and End date are both invalid.&quot;);  </span>
+<span class="nc" id="L98">                a.show();</span>
+<span class="nc" id="L99">    		}</span>
+<span class="nc bnc" id="L100" title="All 4 branches missed.">    		else if(!startDate &amp;&amp; endDate) {</span>
+<span class="nc" id="L101">    			Alert a = new Alert(AlertType.NONE); </span>
+<span class="nc" id="L102">                a.setAlertType(AlertType.ERROR); </span>
+<span class="nc" id="L103">                a.setContentText(&quot;Sorry, the Start date is invalid.&quot;);  </span>
+<span class="nc" id="L104">                a.show();</span>
+<span class="nc" id="L105">    		}</span>
+<span class="nc bnc" id="L106" title="All 4 branches missed.">    		else if(startDate &amp;&amp; !endDate) {</span>
+<span class="nc" id="L107">    			Alert a = new Alert(AlertType.NONE); </span>
+<span class="nc" id="L108">                a.setAlertType(AlertType.ERROR); </span>
+<span class="nc" id="L109">                a.setContentText(&quot;Sorry, the End date is invalid.&quot;);  </span>
+<span class="nc" id="L110">                a.show();</span>
+    		}
+    	}
+		
+<span class="nc" id="L114">    }</span>
+
+    /**
+     * Click the Reset button to edit date
+     * @param event Operation on GUI
+     */
+    @FXML
+    void doResetCb(ActionEvent event) {
+<span class="nc" id="L122">    	tf_enddate_Cb.setEditable(true);</span>
+<span class="nc" id="L123">    	tf_enddate_Cb.setText(&quot;&quot;);</span>
+<span class="nc" id="L124">    	tf_startdate_Cb.setEditable(true);</span>
+<span class="nc" id="L125">    	tf_startdate_Cb.setText(&quot;&quot;);  	</span>
+    	
+<span class="nc" id="L127">		GenerateChartB.enteredDates = false;</span>
+<span class="nc" id="L128">    }</span>
+
+    
+    /**
+     * Click Generate Chart button to create chart of task  A
+     * create Alert if not checking dates.
+     * create Alert with error message when the time of period is out of country data.
+     * for chart creation, see {@link GenerateChart}
+     * @param event Operation on GUI
+     */
+    @FXML
+    void doSearchChartB(ActionEvent event) {
+<span class="nc bnc" id="L140" title="All 2 branches missed.">    	if(!GenerateChartB.enteredDates) {</span>
+<span class="nc" id="L141">    		Alert a = new Alert(AlertType.NONE); </span>
+<span class="nc" id="L142">            a.setAlertType(AlertType.ERROR); </span>
+<span class="nc" id="L143">            a.setContentText(&quot;Sorry, please check Dates first.&quot;);  </span>
+<span class="nc" id="L144">            a.show();</span>
+<span class="nc" id="L145">            return;</span>
+    	}
+<span class="nc" id="L147">    	GenerateChartB.selectedCountryList = ccb_Cb.getCheckModel().getCheckedItems();</span>
+<span class="nc" id="L148">    	GenerateChartB.setDataList();</span>
+<span class="nc" id="L149">    	GenerateChartB.setToPlot();</span>
+<span class="nc" id="L150">    	GenerateChartB.createChart();</span>
+<span class="nc bnc" id="L151" title="All 2 branches missed.">    	if(!GenerateChartB.errMsg.equals(&quot;&quot;)) {</span>
+<span class="nc" id="L152">    		Alert a = new Alert(AlertType.NONE); </span>
+<span class="nc" id="L153">            a.setAlertType(AlertType.WARNING); </span>
+<span class="nc" id="L154">            a.setContentText(&quot;The country(s) only has the information of the following period(s) \n&quot;+GenerateChartB.errMsg+&quot;\0&quot;);  </span>
+<span class="nc" id="L155">            a.show();</span>
+    	}
+    		
+<span class="nc" id="L158">    }</span>
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105040129</span></div></body></html>
