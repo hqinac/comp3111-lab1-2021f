@@ -51,34 +51,70 @@ import javafx.geometry.Side;
 
 
 /**
- * Generate Chart for all the three tasks. 
+ * generate Chart for all the three tasks. 
  * @author ZhangHao
  *
  */
 public class GenerateChart{
-<span class="fc" id="L59">	public String selectedDataset = &quot;&quot;;</span>
-<span class="fc" id="L60">	public String selectedStartDate = &quot;&quot;;</span>
-<span class="fc" id="L61">	public String selectedEndDate = &quot;&quot;;</span>
-<span class="fc" id="L62">	public String missingDate = &quot;&quot;;</span>
+	/**
+	 * name of selected csv file
+	 */
+<span class="fc" id="L62">	public String selectedDataset = &quot;&quot;;</span>
+	/**
+	 * start time in &quot;MM/dd/yyyy&quot;, e.g.(3/21/2020)
+	 */
+<span class="fc" id="L66">	public String selectedStartDate = &quot;&quot;;</span>
+	/**
+	 * end time in &quot;MM/dd/yyyy&quot;, e.g.(3/21/2020)
+	 */
+<span class="fc" id="L70">	public String selectedEndDate = &quot;&quot;;</span>
+	/**
+	 * store information of location and time where data is empty
+	 * used to output error message
+	 */
+<span class="fc" id="L75">	public String missingDate = &quot;&quot;;</span>
+	/**
+	 * decide task, 1 means TaskA, 2 means TaskB, and 3 means TaskC.
+	 */
 	private int taskNumber;
-<span class="fc" id="L64">	public ArrayList&lt;String&gt; countryNameList = new ArrayList&lt;String&gt;();</span>
-<span class="fc" id="L65">	public boolean enteredDates = false;</span>
+	/**
+	 * location list in the csv file
+	 */
+<span class="fc" id="L83">	public ArrayList&lt;String&gt; countryNameList = new ArrayList&lt;String&gt;();</span>
+	/**
+	 * parameter to mark that correct dates have been enterd and cannot be changed before reset.
+	 */
+<span class="fc" id="L87">	public boolean enteredDates = false;</span>
+	/**
+	 * selected location from checkcombobox in GUI
+	 */
 	public ObservableList selectedCountryList; 
+	/**
+	 * array of ArrayList, the first dimension seperates by location, and the 2nd dimension seperates  by date. 
+	 */
 	public ArrayList&lt;DailyIncident&gt;[] dataList;
-<span class="fc" id="L68">	public ArrayList&lt;RowDisplay&gt; toPrintList = new ArrayList&lt;RowDisplay&gt;();</span>
-<span class="fc" id="L69">	public String errMsg = &quot;&quot;;</span>
-<span class="fc" id="L70">	public ArrayList&lt;XYChart.Series&gt; toPlotList = new ArrayList&lt;XYChart.Series&gt;();</span>
-<span class="fc" id="L71">	public ArrayList&lt;String&gt; toPlotDateList = new ArrayList&lt;String&gt;();</span>
+	/**
+	 * error message
+	 */
+<span class="fc" id="L99">	public String errMsg = &quot;&quot;;</span>
+	/**
+	 * coordinates of dot that would be draw on the chart.
+	 */
+<span class="fc" id="L103">	public ArrayList&lt;XYChart.Series&gt; toPlotList = new ArrayList&lt;XYChart.Series&gt;();</span>
+	/**
+	 * list of dates between start and end to draw on the chart
+	 */
+<span class="fc" id="L107">	public ArrayList&lt;String&gt; toPlotDateList = new ArrayList&lt;String&gt;();</span>
 
 
 	/**
-	 * Initiallizer 
+	 * constructor
 	 * @param task {@code integer}, 1 means taskA, 2 means taskB and 3 means taskC.
 	 */
-<span class="fc" id="L78">	public GenerateChart(int task) {</span>
-<span class="fc" id="L79">		taskNumber = task;</span>
-<span class="fc" id="L80">		errMsg = &quot;&quot;;</span>
-<span class="fc" id="L81">	}</span>
+<span class="fc" id="L114">	public GenerateChart(int task) {</span>
+<span class="fc" id="L115">		taskNumber = task;</span>
+<span class="fc" id="L116">		errMsg = &quot;&quot;;</span>
+<span class="fc" id="L117">	}</span>
 
 	/**
 	 * define a {@code CSVParser} to achieve the csv file
@@ -86,8 +122,8 @@ public class GenerateChart{
 	 * @return {@code CSVParser}
 	 */
 	public CSVParser getFileParser(String dataset) {
-<span class="fc" id="L89">		FileResource fr = new FileResource(&quot;dataset/&quot; + dataset);</span>
-<span class="fc" id="L90">		return fr.getCSVParser(true);</span>
+<span class="fc" id="L125">		FileResource fr = new FileResource(&quot;dataset/&quot; + dataset);</span>
+<span class="fc" id="L126">		return fr.getCSVParser(true);</span>
 	}
 
 
@@ -98,16 +134,16 @@ public class GenerateChart{
 	 * @return true if valid, false if invalid
 	 */
 	public boolean isDateValid(String date) {
-<span class="fc" id="L101">		Pattern p = Pattern.compile(&quot;(\\d){1,2}\\/(\\d){1,2}\\/(\\d){4}&quot;);</span>
-<span class="fc" id="L102">		Matcher m = p.matcher(date);</span>
-<span class="fc" id="L103">		return m.matches();</span>
+<span class="fc" id="L137">		Pattern p = Pattern.compile(&quot;(\\d){1,2}\\/(\\d){1,2}\\/(\\d){4}&quot;);</span>
+<span class="fc" id="L138">		Matcher m = p.matcher(date);</span>
+<span class="fc" id="L139">		return m.matches();</span>
 
 	}
 	
 	/**
 	 * used after a valid date is input and checked, to make sure that the date cannot be changed before reset.
 	 */
-<span class="fc" id="L110">	public void enterDates() {enteredDates = true; }</span>
+<span class="fc" id="L146">	public void enterDates() {enteredDates = true; }</span>
 
 	
 	/**
@@ -115,20 +151,20 @@ public class GenerateChart{
 	 */
 	public void setCountryNameList()
 	{
-<span class="fc" id="L118">		countryNameList.clear();</span>
+<span class="fc" id="L154">		countryNameList.clear();</span>
 
-<span class="fc" id="L120">		String str = &quot;NA&quot;;</span>
+<span class="fc" id="L156">		String str = &quot;NA&quot;;</span>
 
-<span class="fc bfc" id="L122" title="All 2 branches covered.">		for (CSVRecord rec : getFileParser(selectedDataset)) </span>
+<span class="fc bfc" id="L158" title="All 2 branches covered.">		for (CSVRecord rec : getFileParser(selectedDataset)) </span>
 		{
-<span class="fc" id="L124">			String countryName = rec.get(&quot;location&quot;);</span>
-<span class="fc bfc" id="L125" title="All 2 branches covered.">			if(!countryName.equals(str))</span>
+<span class="fc" id="L160">			String countryName = rec.get(&quot;location&quot;);</span>
+<span class="fc bfc" id="L161" title="All 2 branches covered.">			if(!countryName.equals(str))</span>
 			{
-<span class="fc" id="L127">				countryNameList.add(countryName);</span>
-<span class="fc" id="L128">				str = countryName;</span>
+<span class="fc" id="L163">				countryNameList.add(countryName);</span>
+<span class="fc" id="L164">				str = countryName;</span>
 			}
-<span class="fc" id="L130">		}</span>
-<span class="fc" id="L131">	}</span>
+<span class="fc" id="L166">		}</span>
+<span class="fc" id="L167">	}</span>
 	
 	
 	/**
@@ -136,221 +172,221 @@ public class GenerateChart{
 	 */
 	public void setDataList()
 	{
-<span class="fc" id="L139">		int dataListSize = selectedCountryList.size();</span>
-<span class="fc" id="L140">		dataList = new ArrayList[dataListSize];</span>
+<span class="fc" id="L175">		int dataListSize = selectedCountryList.size();</span>
+<span class="fc" id="L176">		dataList = new ArrayList[dataListSize];</span>
 
-<span class="fc bfc" id="L142" title="All 2 branches covered.">		for(int i=0;i&lt;dataListSize;i++)</span>
+<span class="fc bfc" id="L178" title="All 2 branches covered.">		for(int i=0;i&lt;dataListSize;i++)</span>
 		{
-<span class="fc" id="L144">			dataList[i] = new ArrayList&lt;DailyIncident&gt;();</span>
+<span class="fc" id="L180">			dataList[i] = new ArrayList&lt;DailyIncident&gt;();</span>
 		}
 
-<span class="fc" id="L147">		int i=0;</span>
+<span class="fc" id="L183">		int i=0;</span>
 
-<span class="fc bfc" id="L149" title="All 2 branches covered.">		for (CSVRecord rec : getFileParser(selectedDataset)) </span>
+<span class="fc bfc" id="L185" title="All 2 branches covered.">		for (CSVRecord rec : getFileParser(selectedDataset)) </span>
 		{
-<span class="fc bfc" id="L151" title="All 4 branches covered.">			if(dataList[i].size()!=0&amp;&amp;!rec.get(&quot;location&quot;).equals(selectedCountryList.get(i).toString()))</span>
+<span class="fc bfc" id="L187" title="All 4 branches covered.">			if(dataList[i].size()!=0&amp;&amp;!rec.get(&quot;location&quot;).equals(selectedCountryList.get(i).toString()))</span>
 			{
-<span class="fc bfc" id="L153" title="All 2 branches covered.">				if(i==dataListSize-1)</span>
+<span class="fc bfc" id="L189" title="All 2 branches covered.">				if(i==dataListSize-1)</span>
 				{
-<span class="fc" id="L155">					break;</span>
+<span class="fc" id="L191">					break;</span>
 				}else
 				{
-<span class="fc" id="L158">					i++;</span>
+<span class="fc" id="L194">					i++;</span>
 				}
 			}
 			
-<span class="pc bpc" id="L162" title="1 of 2 branches missed.">			if(rec.get(&quot;location&quot;).equals(selectedCountryList.get(i).toString()))</span>
+<span class="pc bpc" id="L198" title="1 of 2 branches missed.">			if(rec.get(&quot;location&quot;).equals(selectedCountryList.get(i).toString()))</span>
 			{
-<span class="fc" id="L164">				dataList[i].add(new DailyIncident(</span>
-<span class="fc bfc" id="L165" title="All 2 branches covered.">						rec.get(&quot;date&quot;).isEmpty()?&quot;NA&quot;:rec.get(&quot;date&quot;),</span>
-<span class="fc bfc" id="L166" title="All 2 branches covered.">						rec.get(&quot;total_cases&quot;).isEmpty()?&quot;NA&quot;:rec.get(&quot;total_cases&quot;),</span>
-<span class="fc bfc" id="L167" title="All 2 branches covered.">						rec.get(&quot;total_cases_per_million&quot;).isEmpty()?&quot;NA&quot;:rec.get(&quot;total_cases_per_million&quot;),</span>
-<span class="fc bfc" id="L168" title="All 2 branches covered.">						rec.get(&quot;total_deaths&quot;).isEmpty()?&quot;NA&quot;:rec.get(&quot;total_deaths&quot;),</span>
-<span class="fc bfc" id="L169" title="All 2 branches covered.">						rec.get(&quot;total_deaths_per_million&quot;).isEmpty()?&quot;NA&quot;:rec.get(&quot;total_deaths_per_million&quot;),</span>
-<span class="fc bfc" id="L170" title="All 2 branches covered.">						rec.get(&quot;people_fully_vaccinated&quot;).isEmpty()?&quot;NA&quot;:rec.get(&quot;people_fully_vaccinated&quot;),</span>
-<span class="fc bfc" id="L171" title="All 2 branches covered.">						rec.get(&quot;people_vaccinated_per_hundred&quot;).isEmpty()?&quot;NA&quot;:rec.get(&quot;people_vaccinated_per_hundred&quot;)</span>
+<span class="fc" id="L200">				dataList[i].add(new DailyIncident(</span>
+<span class="fc bfc" id="L201" title="All 2 branches covered.">						rec.get(&quot;date&quot;).isEmpty()?&quot;NA&quot;:rec.get(&quot;date&quot;),</span>
+<span class="fc bfc" id="L202" title="All 2 branches covered.">						rec.get(&quot;total_cases&quot;).isEmpty()?&quot;NA&quot;:rec.get(&quot;total_cases&quot;),</span>
+<span class="fc bfc" id="L203" title="All 2 branches covered.">						rec.get(&quot;total_cases_per_million&quot;).isEmpty()?&quot;NA&quot;:rec.get(&quot;total_cases_per_million&quot;),</span>
+<span class="fc bfc" id="L204" title="All 2 branches covered.">						rec.get(&quot;total_deaths&quot;).isEmpty()?&quot;NA&quot;:rec.get(&quot;total_deaths&quot;),</span>
+<span class="fc bfc" id="L205" title="All 2 branches covered.">						rec.get(&quot;total_deaths_per_million&quot;).isEmpty()?&quot;NA&quot;:rec.get(&quot;total_deaths_per_million&quot;),</span>
+<span class="fc bfc" id="L206" title="All 2 branches covered.">						rec.get(&quot;people_fully_vaccinated&quot;).isEmpty()?&quot;NA&quot;:rec.get(&quot;people_fully_vaccinated&quot;),</span>
+<span class="fc bfc" id="L207" title="All 2 branches covered.">						rec.get(&quot;people_vaccinated_per_hundred&quot;).isEmpty()?&quot;NA&quot;:rec.get(&quot;people_vaccinated_per_hundred&quot;)</span>
 						));
 			}
-<span class="fc" id="L174">		}	</span>
-<span class="fc" id="L175">	}</span>
+<span class="fc" id="L210">		}	</span>
+<span class="fc" id="L211">	}</span>
 	
 	/**
-	 * Choose the {@code DailyIncident}s of correct date of interest.
+	 * choose the {@code DailyIncident}s of correct date of interest.
 	 */
 	public void setToPlot() //set toPlotList;toPlotCountryList;toPlotDateList
 	{
-<span class="fc" id="L182">		toPlotList.clear();</span>
-<span class="fc" id="L183">		toPlotDateList.clear();</span>
+<span class="fc" id="L218">		toPlotList.clear();</span>
+<span class="fc" id="L219">		toPlotDateList.clear();</span>
 		//toPlotCountryList.clear();
-<span class="fc" id="L185">		int errMsgCount=0;</span>
-<span class="fc" id="L186">		errMsg = &quot;&quot;;</span>
+<span class="fc" id="L221">		int errMsgCount=0;</span>
+<span class="fc" id="L222">		errMsg = &quot;&quot;;</span>
 		
 		{
-<span class="fc" id="L189">			Calendar i = Calendar.getInstance(); i.setTime(stringToDate(selectedStartDate));</span>
+<span class="fc" id="L225">			Calendar i = Calendar.getInstance(); i.setTime(stringToDate(selectedStartDate));</span>
 			
-<span class="fc bfc" id="L191" title="All 2 branches covered.">			while(!i.getTime().after(stringToDate(selectedEndDate)))</span>
+<span class="fc bfc" id="L227" title="All 2 branches covered.">			while(!i.getTime().after(stringToDate(selectedEndDate)))</span>
 			{
-<span class="fc" id="L193">				toPlotDateList.add(calendarToString(i));</span>
-<span class="fc" id="L194">				i.add(Calendar.DAY_OF_MONTH,1);</span>
+<span class="fc" id="L229">				toPlotDateList.add(calendarToString(i));</span>
+<span class="fc" id="L230">				i.add(Calendar.DAY_OF_MONTH,1);</span>
 			}
 		}
 		
-<span class="fc bfc" id="L198" title="All 2 branches covered.">		for(int i=0;i&lt;(dataList.length);i++)</span>
+<span class="fc bfc" id="L234" title="All 2 branches covered.">		for(int i=0;i&lt;(dataList.length);i++)</span>
 		{
 			
-<span class="fc bfc" id="L201" title="All 2 branches covered.">			if(stringToDate(selectedStartDate).before(stringToDate(dataList[i].get(0).getDate()))</span>
-<span class="fc bfc" id="L202" title="All 2 branches covered.">					||stringToDate(selectedEndDate).after(stringToDate(dataList[i].get(dataList[i].size()-1).getDate())))</span>
+<span class="fc bfc" id="L237" title="All 2 branches covered.">			if(stringToDate(selectedStartDate).before(stringToDate(dataList[i].get(0).getDate()))</span>
+<span class="fc bfc" id="L238" title="All 2 branches covered.">					||stringToDate(selectedEndDate).after(stringToDate(dataList[i].get(dataList[i].size()-1).getDate())))</span>
 			{
-<span class="fc" id="L204">				errMsg += selectedCountryList.get(i).toString()+&quot;: \t\t\t&quot;+</span>
-<span class="fc" id="L205">						&quot;from &quot;+dataList[i].get(0).getDate()+&quot; to &quot;+</span>
-<span class="fc" id="L206">						dataList[i].get(dataList[i].size()-1).getDate();</span>
-<span class="fc" id="L207">				errMsgCount++;</span>
-<span class="pc bpc" id="L208" title="1 of 2 branches missed.">				if(errMsgCount==1)</span>
+<span class="fc" id="L240">				errMsg += selectedCountryList.get(i).toString()+&quot;: \t\t\t&quot;+</span>
+<span class="fc" id="L241">						&quot;from &quot;+dataList[i].get(0).getDate()+&quot; to &quot;+</span>
+<span class="fc" id="L242">						dataList[i].get(dataList[i].size()-1).getDate();</span>
+<span class="fc" id="L243">				errMsgCount++;</span>
+<span class="pc bpc" id="L244" title="1 of 2 branches missed.">				if(errMsgCount==1)</span>
 				{
-<span class="fc" id="L210">					errMsg += &quot;\n&quot;;</span>
-<span class="fc" id="L211">					errMsgCount=0;</span>
+<span class="fc" id="L246">					errMsg += &quot;\n&quot;;</span>
+<span class="fc" id="L247">					errMsgCount=0;</span>
 				}	
 			}
 			
 			//toPlotCountryList.add(selectedCountryList.get(i).toString());
-<span class="fc" id="L216">			XYChart.Series temp = new XYChart.Series();</span>
+<span class="fc" id="L252">			XYChart.Series temp = new XYChart.Series();</span>
 			
 			
-<span class="fc" id="L219">			Calendar j = Calendar.getInstance(); j.setTime(stringToDate(selectedStartDate)); </span>
+<span class="fc" id="L255">			Calendar j = Calendar.getInstance(); j.setTime(stringToDate(selectedStartDate)); </span>
 			//For traversing all dates in [selectedStartDate,selectedEndDate]
-<span class="fc" id="L221">			int startIndex = 0; </span>
+<span class="fc" id="L257">			int startIndex = 0; </span>
 			//startIndex for searching dataList[i]
-<span class="fc" id="L223">			boolean isEmpty = true;</span>
+<span class="fc" id="L259">			boolean isEmpty = true;</span>
 			//whether a series is empty
 			
-<span class="fc bfc" id="L226" title="All 2 branches covered.">			while(!j.getTime().after(stringToDate(selectedEndDate)))</span>
+<span class="fc bfc" id="L262" title="All 2 branches covered.">			while(!j.getTime().after(stringToDate(selectedEndDate)))</span>
 			{
-<span class="fc bfc" id="L228" title="All 2 branches covered.">				for(int k=startIndex;k&lt;dataList[i].size();k++)</span>
+<span class="fc bfc" id="L264" title="All 2 branches covered.">				for(int k=startIndex;k&lt;dataList[i].size();k++)</span>
 				{
-<span class="fc bfc" id="L230" title="All 2 branches covered.">					if(calendarToString(j).equals(dataList[i].get(k).getDate()))</span>
+<span class="fc bfc" id="L266" title="All 2 branches covered.">					if(calendarToString(j).equals(dataList[i].get(k).getDate()))</span>
 					{
-<span class="fc bfc" id="L232" title="All 4 branches covered.">						switch(taskNumber)</span>
+<span class="fc bfc" id="L268" title="All 4 branches covered.">						switch(taskNumber)</span>
 						{
 						case 1:
-<span class="fc bfc" id="L235" title="All 2 branches covered.">							if(!dataList[i].get(k).getTotalCasesPerMillion().equals(&quot;NA&quot;)) {</span>
-<span class="fc" id="L236">								temp.getData().add(new XYChart.Data(calendarToString(j), </span>
-<span class="fc" id="L237">										Float.parseFloat(dataList[i].get(k).getTotalCasesPerMillion())));</span>
-<span class="fc" id="L238">								isEmpty = false;</span>
+<span class="fc bfc" id="L271" title="All 2 branches covered.">							if(!dataList[i].get(k).getTotalCasesPerMillion().equals(&quot;NA&quot;)) {</span>
+<span class="fc" id="L272">								temp.getData().add(new XYChart.Data(calendarToString(j), </span>
+<span class="fc" id="L273">										Float.parseFloat(dataList[i].get(k).getTotalCasesPerMillion())));</span>
+<span class="fc" id="L274">								isEmpty = false;</span>
 							}
 							else {
-<span class="fc" id="L241">								missingDate = missingDate + selectedCountryList.get(i).toString()+&quot;: &quot;+dataList[i].get(k).getDate()+&quot;\n&quot;;</span>
+<span class="fc" id="L277">								missingDate = missingDate + selectedCountryList.get(i).toString()+&quot;: &quot;+dataList[i].get(k).getDate()+&quot;\n&quot;;</span>
 							}
 
-<span class="fc" id="L244">							break;</span>
+<span class="fc" id="L280">							break;</span>
 						case 2:
 
-<span class="fc bfc" id="L247" title="All 2 branches covered.">							if(!dataList[i].get(k).getTotalDeathsPerMillion().equals(&quot;NA&quot;)) {</span>
-<span class="fc" id="L248">								temp.getData().add(new XYChart.Data(calendarToString(j), </span>
-<span class="fc" id="L249">										Float.parseFloat(dataList[i].get(k).getTotalDeathsPerMillion())));</span>
-<span class="fc" id="L250">								isEmpty = false;</span>
+<span class="fc bfc" id="L283" title="All 2 branches covered.">							if(!dataList[i].get(k).getTotalDeathsPerMillion().equals(&quot;NA&quot;)) {</span>
+<span class="fc" id="L284">								temp.getData().add(new XYChart.Data(calendarToString(j), </span>
+<span class="fc" id="L285">										Float.parseFloat(dataList[i].get(k).getTotalDeathsPerMillion())));</span>
+<span class="fc" id="L286">								isEmpty = false;</span>
 							}
 							else {
-<span class="fc" id="L253">								missingDate = missingDate + selectedCountryList.get(i).toString()+&quot;: &quot;+dataList[i].get(k).getDate()+&quot;\n&quot;;</span>
+<span class="fc" id="L289">								missingDate = missingDate + selectedCountryList.get(i).toString()+&quot;: &quot;+dataList[i].get(k).getDate()+&quot;\n&quot;;</span>
 							}
 
-<span class="fc" id="L256">							break;</span>
+<span class="fc" id="L292">							break;</span>
 						case 3:
 
-<span class="fc bfc" id="L259" title="All 2 branches covered.">							if(!dataList[i].get(k).getPeopleVaccinatedPerHundred().equals(&quot;NA&quot;)) {</span>
-<span class="fc" id="L260">								temp.getData().add(new XYChart.Data(calendarToString(j), </span>
-<span class="fc" id="L261">										Float.parseFloat(dataList[i].get(k).getPeopleVaccinatedPerHundred())));</span>
-<span class="fc" id="L262">								isEmpty = false;</span>
+<span class="fc bfc" id="L295" title="All 2 branches covered.">							if(!dataList[i].get(k).getPeopleVaccinatedPerHundred().equals(&quot;NA&quot;)) {</span>
+<span class="fc" id="L296">								temp.getData().add(new XYChart.Data(calendarToString(j), </span>
+<span class="fc" id="L297">										Float.parseFloat(dataList[i].get(k).getPeopleVaccinatedPerHundred())));</span>
+<span class="fc" id="L298">								isEmpty = false;</span>
 							}
 							else {
-<span class="fc" id="L265">								missingDate = missingDate + selectedCountryList.get(i).toString()+&quot;: &quot;+dataList[i].get(k).getDate()+&quot;\n&quot;;</span>
+<span class="fc" id="L301">								missingDate = missingDate + selectedCountryList.get(i).toString()+&quot;: &quot;+dataList[i].get(k).getDate()+&quot;\n&quot;;</span>
 							}
 
 							break;
 						}
 
-<span class="fc" id="L271">						startIndex++;</span>
+<span class="fc" id="L307">						startIndex++;</span>
 					}
 				}
-<span class="fc" id="L274">				j.add(Calendar.DAY_OF_MONTH,1);</span>
+<span class="fc" id="L310">				j.add(Calendar.DAY_OF_MONTH,1);</span>
 			}
-<span class="fc bfc" id="L276" title="All 2 branches covered.">			if(!isEmpty) {</span>
-<span class="fc" id="L277">				temp.setName(selectedCountryList.get(i).toString());</span>
-<span class="fc" id="L278">				toPlotList.add(temp);</span>
+<span class="fc bfc" id="L312" title="All 2 branches covered.">			if(!isEmpty) {</span>
+<span class="fc" id="L313">				temp.setName(selectedCountryList.get(i).toString());</span>
+<span class="fc" id="L314">				toPlotList.add(temp);</span>
 				//toPlotCountryList.add(selectedCountryList.get(i).toString());
 			}
 		}		
-<span class="fc" id="L282">	}</span>
+<span class="fc" id="L318">	}</span>
 	
 	/**
-	 * create the chart of result using the selected DailyIncidents
-	 * for method of selection
+	 * create the chart of result using the selected {@code DailyIncident}s
+	 * from method of selection
 	 * @see #setDataList() and
 	 * @see #setToPlot()
 	 */
 	public void createChart()
 	{
-<span class="nc" id="L292">		Stage stage = new Stage();</span>
+<span class="nc" id="L328">		Stage stage = new Stage();</span>
 
-<span class="nc" id="L294">		stage.setTitle(&quot;Line Chart View&quot;);</span>
-<span class="nc" id="L295">		CategoryAxis xAxis = new CategoryAxis();</span>
+<span class="nc" id="L330">		stage.setTitle(&quot;Line Chart View&quot;);</span>
+<span class="nc" id="L331">		CategoryAxis xAxis = new CategoryAxis();</span>
 		//ObservableList&lt;String&gt; list = FXCollections.observableArrayList(toPlotDateList);
-<span class="nc" id="L297">		xAxis.setCategories(FXCollections.observableArrayList(toPlotDateList));</span>
-<span class="nc" id="L298">		NumberAxis yAxis = new NumberAxis();</span>
-<span class="nc" id="L299">		xAxis.setLabel(&quot;Date&quot;);</span>
-<span class="nc" id="L300">		LineChart&lt;String,Number&gt; lineChart = </span>
+<span class="nc" id="L333">		xAxis.setCategories(FXCollections.observableArrayList(toPlotDateList));</span>
+<span class="nc" id="L334">		NumberAxis yAxis = new NumberAxis();</span>
+<span class="nc" id="L335">		xAxis.setLabel(&quot;Date&quot;);</span>
+<span class="nc" id="L336">		LineChart&lt;String,Number&gt; lineChart = </span>
 				new LineChart&lt;String,Number&gt;(xAxis,yAxis);
-<span class="nc bnc" id="L302" title="All 4 branches missed.">		switch(taskNumber)</span>
+<span class="nc bnc" id="L338" title="All 4 branches missed.">		switch(taskNumber)</span>
 		{
 		case 1:
-<span class="nc" id="L305">			lineChart.setTitle(&quot;Cumulative Confirmed COVID-19 Cases (Per 1M)&quot;);</span>
-<span class="nc" id="L306">			break;</span>
+<span class="nc" id="L341">			lineChart.setTitle(&quot;Cumulative Confirmed COVID-19 Cases (Per 1M)&quot;);</span>
+<span class="nc" id="L342">			break;</span>
 		case 2:
-<span class="nc" id="L308">			lineChart.setTitle(&quot;Cumulative Confirmed COVID-19 Deaths (Per 1M)&quot;);</span>
-<span class="nc" id="L309">			break;</span>
+<span class="nc" id="L344">			lineChart.setTitle(&quot;Cumulative Confirmed COVID-19 Deaths (Per 1M)&quot;);</span>
+<span class="nc" id="L345">			break;</span>
 		case 3:
-<span class="nc" id="L311">			lineChart.setTitle(&quot;Cumulative Rate of Vaccination against COVID-19&quot;);</span>
+<span class="nc" id="L347">			lineChart.setTitle(&quot;Cumulative Rate of Vaccination against COVID-19&quot;);</span>
 		}
 
-<span class="nc bnc" id="L314" title="All 2 branches missed.">		for(int i=0;i&lt;toPlotList.size();i++)</span>
+<span class="nc bnc" id="L350" title="All 2 branches missed.">		for(int i=0;i&lt;toPlotList.size();i++)</span>
 		{
-<span class="nc" id="L316">			lineChart.getData().add(toPlotList.get(i));</span>
+<span class="nc" id="L352">			lineChart.getData().add(toPlotList.get(i));</span>
 		}
-<span class="nc" id="L318">		lineChart.setCreateSymbols(false);</span>
-<span class="nc" id="L319">		Scene scene  = new Scene(lineChart,800,600);</span>
-<span class="nc" id="L320">		stage.setScene(scene);</span>
-<span class="nc" id="L321">		stage.show();</span>
-<span class="nc" id="L322">	}</span>
+<span class="nc" id="L354">		lineChart.setCreateSymbols(false);</span>
+<span class="nc" id="L355">		Scene scene  = new Scene(lineChart,800,600);</span>
+<span class="nc" id="L356">		stage.setScene(scene);</span>
+<span class="nc" id="L357">		stage.show();</span>
+<span class="nc" id="L358">	}</span>
 	
 	/**
-	 * Transfer from {@code Calender} object to {@code String}, used to output date 
+	 * transfer from {@code Calender} object to {@code String}, used to output date 
 	 * between interested start date and end date on chart
 	 * @param d {@code Calender}
 	 * @return transfered {@code String}
 	 */
 	public String calendarToString(Calendar d)
 	{
-<span class="fc" id="L332">		String str = &quot;&quot;;</span>
-<span class="fc" id="L333">		str+=Integer.toString(d.get(Calendar.MONTH)+1)+&quot;/&quot;;</span>
-<span class="fc" id="L334">		str+=Integer.toString(d.get(Calendar.DAY_OF_MONTH))+&quot;/&quot;;</span>
-<span class="fc" id="L335">		str+=Integer.toString(d.get(Calendar.YEAR));</span>
-<span class="fc" id="L336">		return str;</span>
+<span class="fc" id="L368">		String str = &quot;&quot;;</span>
+<span class="fc" id="L369">		str+=Integer.toString(d.get(Calendar.MONTH)+1)+&quot;/&quot;;</span>
+<span class="fc" id="L370">		str+=Integer.toString(d.get(Calendar.DAY_OF_MONTH))+&quot;/&quot;;</span>
+<span class="fc" id="L371">		str+=Integer.toString(d.get(Calendar.YEAR));</span>
+<span class="fc" id="L372">		return str;</span>
 	}
 	
 	/**
-	 * Transfer from string to {@code Date} object, used to make comparison between dates
+	 * transfer from string to {@code Date} object, used to make comparison between dates
 	 * @param str input date in {@code String}
 	 * @return Date object 
 	 */
 	public Date stringToDate(String str)
 	{
-<span class="fc" id="L346">		DateFormat df = new SimpleDateFormat(&quot;MM/dd/yyyy&quot;);</span>
-<span class="fc" id="L347">		Date date = null;</span>
+<span class="fc" id="L382">		DateFormat df = new SimpleDateFormat(&quot;MM/dd/yyyy&quot;);</span>
+<span class="fc" id="L383">		Date date = null;</span>
 		try {
-<span class="fc" id="L349">			date = df.parse(str);</span>
-<span class="nc" id="L350">		} catch (ParseException e) {</span>
-<span class="nc" id="L351">			e.printStackTrace();</span>
-<span class="fc" id="L352">		}</span>
-<span class="fc" id="L353">		return date;</span>
+<span class="fc" id="L385">			date = df.parse(str);</span>
+<span class="nc" id="L386">		} catch (ParseException e) {</span>
+<span class="nc" id="L387">			e.printStackTrace();</span>
+<span class="fc" id="L388">		}</span>
+<span class="fc" id="L389">		return date;</span>
 	}
 	
 }

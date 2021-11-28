@@ -49,8 +49,8 @@ import java.text.DateFormat;
 import java.text.ParseException;
 
 /**
- * A connecttion between the total UI to the UI of different Tasks
- * @author qinhanmo
+ * a connecttion between the main UI and the UI of different Tasks
+ * @author QIN,Hanmo
  *
  */
 public class StartQueryTable{
@@ -59,7 +59,7 @@ public class StartQueryTable{
 <span class="fc" id="L59">	private String fxmlFile=&quot;&quot;;</span>
 	
 	/**
-	 * initializer
+	 * constructor
 	 * @param fileName name of the input csv file
 	 */
 <span class="fc" id="L65">	public StartQueryTable(String fileName){</span>
@@ -79,7 +79,7 @@ public class StartQueryTable{
 	}
 	
 	/**
-	 * Check whether the input csv file exists
+	 * check whether the input csv file exists
 	 * @param dataset name of the csv file in {@code String}.
 	 * @return true if exists, false if not exists.
 	 */
@@ -90,7 +90,7 @@ public class StartQueryTable{
 	}
 	
 	/**
-	 * Store the input dataset name(name of the csv file)
+	 * store the input dataset name(name of the csv file)
 	 * @param DataSet the input dataset name(name of the csv file)
 	 */
 	public void storeDataSet(String DataSet) {
@@ -98,7 +98,7 @@ public class StartQueryTable{
 <span class="fc" id="L98">	}</span>
 	
 	/**
-	 * Store the result of {@link #isDatasetValid(String)}, to extrict the change of input dataset after correct checking.
+	 * store the result of {@link #isDatasetValid(String)}, to extrict the change of input dataset after correct checking.
 	 */
 <span class="nc" id="L103">	public void checkPass() { isCheckPass = true;}</span>
 	

@@ -47,8 +47,12 @@ import java.text.SimpleDateFormat;
 import java.text.DateFormat;
 import java.text.ParseException;
 
-
-<span class="nc" id="L51">public class Controller {</span>
+/**
+ * Controller  of the main GUI.
+ * @author qinhanmo
+ *
+ */
+<span class="nc" id="L55">public class Controller {</span>
 
     @FXML
     private Label L_1_Ca;
@@ -161,31 +165,32 @@ import java.text.ParseException;
     @FXML
     private TextField tf_dataset_Tc;
     
-    /**
+    
+	@FXML
+	/**
      * This method means click the &quot;click to start&quot;tab of TableB to open the GUI of illitialization.(popUpTableB.fxml)
      * Check the input selectedDataset is available before opening, if the data set is invalid, give an Alert of error.
      * @param event Operation on GUI
      */
-	@FXML
 	void clickToStartTableB(ActionEvent event) {
-<span class="nc" id="L171">		String selectedDataset = tf_dataset_Tb.getText();</span>
-<span class="nc" id="L172">		StartQueryTable startTableB = new StartQueryTable(&quot;popUpTableB.fxml&quot;);</span>
+<span class="nc" id="L176">		String selectedDataset = tf_dataset_Tb.getText();</span>
+<span class="nc" id="L177">		StartQueryTable startTableB = new StartQueryTable(&quot;popUpTableB.fxml&quot;);</span>
 
 
-<span class="nc bnc" id="L175" title="All 2 branches missed.">		if(!startTableB.isDatasetValid(selectedDataset)) {</span>
-<span class="nc" id="L176">			Alert a = new Alert(AlertType.NONE); </span>
-<span class="nc" id="L177">			a.setAlertType(AlertType.ERROR); </span>
-<span class="nc" id="L178">			a.setContentText(&quot;Sorry, the input DataSet doesn't exist.&quot;);  </span>
-<span class="nc" id="L179">			a.show();</span>
-<span class="nc" id="L180">			return;</span>
+<span class="nc bnc" id="L180" title="All 2 branches missed.">		if(!startTableB.isDatasetValid(selectedDataset)) {</span>
+<span class="nc" id="L181">			Alert a = new Alert(AlertType.NONE); </span>
+<span class="nc" id="L182">			a.setAlertType(AlertType.ERROR); </span>
+<span class="nc" id="L183">			a.setContentText(&quot;Sorry, the input DataSet doesn't exist.&quot;);  </span>
+<span class="nc" id="L184">			a.show();</span>
+<span class="nc" id="L185">			return;</span>
 		}
 		else {   
-<span class="nc" id="L183">			startTableB.storeDataSet(selectedDataset);  </span>
-<span class="nc" id="L184">			startTableB.checkPass();</span>
-<span class="nc" id="L185">			startTableB.startANewWindow();</span>
-<span class="nc" id="L186">			GlobalDataSet.dataSetTableB = selectedDataset;</span>
+<span class="nc" id="L188">			startTableB.storeDataSet(selectedDataset);  </span>
+<span class="nc" id="L189">			startTableB.checkPass();</span>
+<span class="nc" id="L190">			startTableB.startANewWindow();</span>
+<span class="nc" id="L191">			GlobalDataSet.dataSetTableB = selectedDataset;</span>
 		}
-<span class="nc" id="L188">	}</span>
+<span class="nc" id="L193">	}</span>
 
 	/**
      * This method means click the &quot;click to start&quot;tab of TableA to open the GUI of illitialization.(popUpTableA.fxml)
@@ -194,24 +199,24 @@ import java.text.ParseException;
      */
 	@FXML
 	void clickToStartTableA(ActionEvent event) {
-<span class="nc" id="L197">		String selectedDataset = tf_dataset_Ta.getText();</span>
-<span class="nc" id="L198">		StartQueryTable startTableA = new StartQueryTable(&quot;popUpTableA.fxml&quot;);</span>
+<span class="nc" id="L202">		String selectedDataset = tf_dataset_Ta.getText();</span>
+<span class="nc" id="L203">		StartQueryTable startTableA = new StartQueryTable(&quot;popUpTableA.fxml&quot;);</span>
 
 
-<span class="nc bnc" id="L201" title="All 2 branches missed.">		if(!startTableA.isDatasetValid(selectedDataset)) {</span>
-<span class="nc" id="L202">			Alert a = new Alert(AlertType.NONE); </span>
-<span class="nc" id="L203">			a.setAlertType(AlertType.ERROR); </span>
-<span class="nc" id="L204">			a.setContentText(&quot;Sorry, the input DataSet doesn't exist.&quot;);  </span>
-<span class="nc" id="L205">			a.show();</span>
-<span class="nc" id="L206">			return;</span>
+<span class="nc bnc" id="L206" title="All 2 branches missed.">		if(!startTableA.isDatasetValid(selectedDataset)) {</span>
+<span class="nc" id="L207">			Alert a = new Alert(AlertType.NONE); </span>
+<span class="nc" id="L208">			a.setAlertType(AlertType.ERROR); </span>
+<span class="nc" id="L209">			a.setContentText(&quot;Sorry, the input DataSet doesn't exist.&quot;);  </span>
+<span class="nc" id="L210">			a.show();</span>
+<span class="nc" id="L211">			return;</span>
 		}
 		else {   
-<span class="nc" id="L209">			startTableA.storeDataSet(selectedDataset);  </span>
-<span class="nc" id="L210">			startTableA.checkPass();</span>
-<span class="nc" id="L211">			startTableA.startANewWindow();</span>
-<span class="nc" id="L212">			GlobalDataSet.dataSetTableA = selectedDataset;</span>
+<span class="nc" id="L214">			startTableA.storeDataSet(selectedDataset);  </span>
+<span class="nc" id="L215">			startTableA.checkPass();</span>
+<span class="nc" id="L216">			startTableA.startANewWindow();</span>
+<span class="nc" id="L217">			GlobalDataSet.dataSetTableA = selectedDataset;</span>
 		}
-<span class="nc" id="L214">	}</span>
+<span class="nc" id="L219">	}</span>
 
 	/**
      * This method means click the &quot;click to start&quot;tab of TableC to open the GUI of illitialization.(popUpTableC.fxml)
@@ -220,24 +225,24 @@ import java.text.ParseException;
      */
 	@FXML
 	void clickToStartTableC(ActionEvent event) {
-<span class="nc" id="L223">		String selectedDataset = tf_dataset_Tc.getText();</span>
-<span class="nc" id="L224">		StartQueryTable startTableC = new StartQueryTable(&quot;popUpTableC.fxml&quot;);</span>
+<span class="nc" id="L228">		String selectedDataset = tf_dataset_Tc.getText();</span>
+<span class="nc" id="L229">		StartQueryTable startTableC = new StartQueryTable(&quot;popUpTableC.fxml&quot;);</span>
 
 
-<span class="nc bnc" id="L227" title="All 2 branches missed.">		if(!startTableC.isDatasetValid(selectedDataset)) {</span>
-<span class="nc" id="L228">			Alert a = new Alert(AlertType.NONE); </span>
-<span class="nc" id="L229">			a.setAlertType(AlertType.ERROR); </span>
-<span class="nc" id="L230">			a.setContentText(&quot;Sorry, the input DataSet doesn't exist.&quot;);  </span>
-<span class="nc" id="L231">			a.show();</span>
-<span class="nc" id="L232">			return;</span>
+<span class="nc bnc" id="L232" title="All 2 branches missed.">		if(!startTableC.isDatasetValid(selectedDataset)) {</span>
+<span class="nc" id="L233">			Alert a = new Alert(AlertType.NONE); </span>
+<span class="nc" id="L234">			a.setAlertType(AlertType.ERROR); </span>
+<span class="nc" id="L235">			a.setContentText(&quot;Sorry, the input DataSet doesn't exist.&quot;);  </span>
+<span class="nc" id="L236">			a.show();</span>
+<span class="nc" id="L237">			return;</span>
 		}
 		else {   
-<span class="nc" id="L235">			startTableC.storeDataSet(selectedDataset);  </span>
-<span class="nc" id="L236">			startTableC.checkPass();</span>
-<span class="nc" id="L237">			startTableC.startANewWindow();</span>
-<span class="nc" id="L238">			GlobalDataSet.dataSetTableC = selectedDataset;</span>
+<span class="nc" id="L240">			startTableC.storeDataSet(selectedDataset);  </span>
+<span class="nc" id="L241">			startTableC.checkPass();</span>
+<span class="nc" id="L242">			startTableC.startANewWindow();</span>
+<span class="nc" id="L243">			GlobalDataSet.dataSetTableC = selectedDataset;</span>
 		}
-<span class="nc" id="L240">	}</span>
+<span class="nc" id="L245">	}</span>
 	
 	/**
 	 * Click the tab of getting confirmed cases in task zero
@@ -246,12 +251,12 @@ import java.text.ParseException;
 	 */
 	@FXML
 	void doConfirmedCases(ActionEvent event) {
-<span class="nc" id="L249">		String iDataset = textfieldDataset.getText();</span>
-<span class="nc" id="L250">		String iISO = textfieldISO.getText();</span>
-<span class="nc" id="L251">		String oReport = DataAnalysis.getConfirmedCases(iDataset, iISO);</span>
-<span class="nc" id="L252">		textAreaConsole.setText(oReport);</span>
+<span class="nc" id="L254">		String iDataset = textfieldDataset.getText();</span>
+<span class="nc" id="L255">		String iISO = textfieldISO.getText();</span>
+<span class="nc" id="L256">		String oReport = DataAnalysis.getConfirmedCases(iDataset, iISO);</span>
+<span class="nc" id="L257">		textAreaConsole.setText(oReport);</span>
 
-<span class="nc" id="L254">	}</span>
+<span class="nc" id="L259">	}</span>
 	
 	/**
 	 * Click the tab of getting confirmed deaths in task zero
@@ -260,12 +265,12 @@ import java.text.ParseException;
 	 */
 	@FXML
 	void doConfirmedDeaths(ActionEvent event) {
-<span class="nc" id="L263">		String iDataset = textfieldDataset.getText();</span>
-<span class="nc" id="L264">		String iISO = textfieldISO.getText();</span>
-<span class="nc" id="L265">		String oReport = DataAnalysis.getConfirmedDeaths(iDataset, iISO);</span>
-<span class="nc" id="L266">		textAreaConsole.setText(oReport);</span>
+<span class="nc" id="L268">		String iDataset = textfieldDataset.getText();</span>
+<span class="nc" id="L269">		String iISO = textfieldISO.getText();</span>
+<span class="nc" id="L270">		String oReport = DataAnalysis.getConfirmedDeaths(iDataset, iISO);</span>
+<span class="nc" id="L271">		textAreaConsole.setText(oReport);</span>
 
-<span class="nc" id="L268">	}</span>
+<span class="nc" id="L273">	}</span>
 
 	/**
 	 * Click the tab of getting rate of vaccination in task zero
@@ -274,11 +279,11 @@ import java.text.ParseException;
 	 */
 	@FXML
 	void doRateOfVaccination(ActionEvent event) {
-<span class="nc" id="L277">		String iDataset = textfieldDataset.getText();</span>
-<span class="nc" id="L278">		String iISO = textfieldISO.getText();</span>
-<span class="nc" id="L279">		String oReport = DataAnalysis.getRateOfVaccination(iDataset, iISO);</span>
-<span class="nc" id="L280">		textAreaConsole.setText(oReport);</span>
-<span class="nc" id="L281">	}</span>
+<span class="nc" id="L282">		String iDataset = textfieldDataset.getText();</span>
+<span class="nc" id="L283">		String iISO = textfieldISO.getText();</span>
+<span class="nc" id="L284">		String oReport = DataAnalysis.getRateOfVaccination(iDataset, iISO);</span>
+<span class="nc" id="L285">		textAreaConsole.setText(oReport);</span>
+<span class="nc" id="L286">	}</span>
 
 
 
@@ -290,25 +295,25 @@ import java.text.ParseException;
      */
 	@FXML
 	void clickToStartChartB(ActionEvent event) {
-<span class="nc" id="L293">		String selectedDataset = tf_dataset_Cb.getText();</span>
-<span class="nc" id="L294">		StartQueryTable startChartB = new StartQueryTable(&quot;popUpChartB.fxml&quot;);</span>
+<span class="nc" id="L298">		String selectedDataset = tf_dataset_Cb.getText();</span>
+<span class="nc" id="L299">		StartQueryTable startChartB = new StartQueryTable(&quot;popUpChartB.fxml&quot;);</span>
 
 
-<span class="nc bnc" id="L297" title="All 2 branches missed.">		if(!startChartB.isDatasetValid(selectedDataset)) {</span>
-<span class="nc" id="L298">			Alert a = new Alert(AlertType.NONE); </span>
-<span class="nc" id="L299">			a.setAlertType(AlertType.ERROR); </span>
-<span class="nc" id="L300">			a.setContentText(&quot;Sorry, the input DataSet doesn't exist.&quot;);  </span>
-<span class="nc" id="L301">			a.show();</span>
-<span class="nc" id="L302">			return;</span>
+<span class="nc bnc" id="L302" title="All 2 branches missed.">		if(!startChartB.isDatasetValid(selectedDataset)) {</span>
+<span class="nc" id="L303">			Alert a = new Alert(AlertType.NONE); </span>
+<span class="nc" id="L304">			a.setAlertType(AlertType.ERROR); </span>
+<span class="nc" id="L305">			a.setContentText(&quot;Sorry, the input DataSet doesn't exist.&quot;);  </span>
+<span class="nc" id="L306">			a.show();</span>
+<span class="nc" id="L307">			return;</span>
 		}
 		else {   
-<span class="nc" id="L305">			startChartB.storeDataSet(selectedDataset);  </span>
-<span class="nc" id="L306">			startChartB.checkPass();</span>
-<span class="nc" id="L307">			startChartB.startANewWindow();</span>
-<span class="nc" id="L308">			GlobalDataSet.dataSetChartB = selectedDataset;</span>
+<span class="nc" id="L310">			startChartB.storeDataSet(selectedDataset);  </span>
+<span class="nc" id="L311">			startChartB.checkPass();</span>
+<span class="nc" id="L312">			startChartB.startANewWindow();</span>
+<span class="nc" id="L313">			GlobalDataSet.dataSetChartB = selectedDataset;</span>
 		}
 
-<span class="nc" id="L311">	}</span>
+<span class="nc" id="L316">	}</span>
 	
 	/**
      * This method means click the &quot;click to start&quot;tab of ChartA to open the GUI of illitialization.(popUpChartA.fxml)
@@ -317,25 +322,25 @@ import java.text.ParseException;
      */
 	@FXML
 	void clickToStartChartA(ActionEvent event) {
-<span class="nc" id="L320">		String selectedDataset = tf_dataset_Ca.getText();</span>
-<span class="nc" id="L321">		StartQueryTable startChartA = new StartQueryTable(&quot;popUpChartA.fxml&quot;);</span>
+<span class="nc" id="L325">		String selectedDataset = tf_dataset_Ca.getText();</span>
+<span class="nc" id="L326">		StartQueryTable startChartA = new StartQueryTable(&quot;popUpChartA.fxml&quot;);</span>
 
 
-<span class="nc bnc" id="L324" title="All 2 branches missed.">		if(!startChartA.isDatasetValid(selectedDataset)) {</span>
-<span class="nc" id="L325">			Alert a = new Alert(AlertType.NONE); </span>
-<span class="nc" id="L326">			a.setAlertType(AlertType.ERROR); </span>
-<span class="nc" id="L327">			a.setContentText(&quot;Sorry, the input DataSet doesn't exist.&quot;);  </span>
-<span class="nc" id="L328">			a.show();</span>
-<span class="nc" id="L329">			return;</span>
+<span class="nc bnc" id="L329" title="All 2 branches missed.">		if(!startChartA.isDatasetValid(selectedDataset)) {</span>
+<span class="nc" id="L330">			Alert a = new Alert(AlertType.NONE); </span>
+<span class="nc" id="L331">			a.setAlertType(AlertType.ERROR); </span>
+<span class="nc" id="L332">			a.setContentText(&quot;Sorry, the input DataSet doesn't exist.&quot;);  </span>
+<span class="nc" id="L333">			a.show();</span>
+<span class="nc" id="L334">			return;</span>
 		}
 		else {   
-<span class="nc" id="L332">			startChartA.storeDataSet(selectedDataset);  </span>
-<span class="nc" id="L333">			startChartA.checkPass();</span>
-<span class="nc" id="L334">			startChartA.startANewWindow();</span>
-<span class="nc" id="L335">			GlobalDataSet.dataSetChartA = selectedDataset;</span>
+<span class="nc" id="L337">			startChartA.storeDataSet(selectedDataset);  </span>
+<span class="nc" id="L338">			startChartA.checkPass();</span>
+<span class="nc" id="L339">			startChartA.startANewWindow();</span>
+<span class="nc" id="L340">			GlobalDataSet.dataSetChartA = selectedDataset;</span>
 		}
 
-<span class="nc" id="L338">	}</span>
+<span class="nc" id="L343">	}</span>
 	
 
 	/**
@@ -345,25 +350,25 @@ import java.text.ParseException;
      */
 	@FXML
 	void clickToStartChartC(ActionEvent event) {
-<span class="nc" id="L348">		String selectedDataset = tf_dataset_Cc.getText();</span>
-<span class="nc" id="L349">		StartQueryTable startChartC = new StartQueryTable(&quot;popUpChartC.fxml&quot;);</span>
+<span class="nc" id="L353">		String selectedDataset = tf_dataset_Cc.getText();</span>
+<span class="nc" id="L354">		StartQueryTable startChartC = new StartQueryTable(&quot;popUpChartC.fxml&quot;);</span>
 
 
-<span class="nc bnc" id="L352" title="All 2 branches missed.">		if(!startChartC.isDatasetValid(selectedDataset)) {</span>
-<span class="nc" id="L353">			Alert a = new Alert(AlertType.NONE); </span>
-<span class="nc" id="L354">			a.setAlertType(AlertType.ERROR); </span>
-<span class="nc" id="L355">			a.setContentText(&quot;Sorry, the input DataSet doesn't exist.&quot;);  </span>
-<span class="nc" id="L356">			a.show();</span>
-<span class="nc" id="L357">			return;</span>
+<span class="nc bnc" id="L357" title="All 2 branches missed.">		if(!startChartC.isDatasetValid(selectedDataset)) {</span>
+<span class="nc" id="L358">			Alert a = new Alert(AlertType.NONE); </span>
+<span class="nc" id="L359">			a.setAlertType(AlertType.ERROR); </span>
+<span class="nc" id="L360">			a.setContentText(&quot;Sorry, the input DataSet doesn't exist.&quot;);  </span>
+<span class="nc" id="L361">			a.show();</span>
+<span class="nc" id="L362">			return;</span>
 		}
 		else {   
-<span class="nc" id="L360">			startChartC.storeDataSet(selectedDataset);  </span>
-<span class="nc" id="L361">			startChartC.checkPass();</span>
-<span class="nc" id="L362">			startChartC.startANewWindow();</span>
-<span class="nc" id="L363">			GlobalDataSet.dataSetChartC = selectedDataset;</span>
+<span class="nc" id="L365">			startChartC.storeDataSet(selectedDataset);  </span>
+<span class="nc" id="L366">			startChartC.checkPass();</span>
+<span class="nc" id="L367">			startChartC.startANewWindow();</span>
+<span class="nc" id="L368">			GlobalDataSet.dataSetChartC = selectedDataset;</span>
 		}
 
-<span class="nc" id="L366">	}</span>
+<span class="nc" id="L371">	}</span>
 
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105040129</span></div></body></html>

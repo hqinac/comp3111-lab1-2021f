@@ -3,18 +3,40 @@
 /**
  * This class stores data of one location in one day.
  * Including date, total cases(per million), total deaths(per million), and people fully vaccinated(per hundred).
+ * @author ZHONG,Yingqi
  */
 public class DailyIncident {
+	/**
+	 * date of recording
+	 */
 	private String date;
+	/**
+	 * total cases on that date
+	 */
 	private String total_cases;
+	/**
+	 * total deaths per million on that date
+	 */
 	private String total_cases_per_million;
+	/**
+	 * total deaths on that  date
+	 */
 	private String total_deaths;
+	/**
+	 * total deaths per million on that date
+	 */
 	private String total_deaths_per_million;
+	/**
+	 * people fullt vaccinated on that date
+	 */
 	private String people_fully_vaccinated;
+	/**
+	 * people vaccinated per hundred on that date.
+	 */
 	private String people_vaccinated_per_hundred;
 	
 	/**
-	 * Initializer
+	 * constructor
 	 * @param date date of recording
 	 * @param total_cases total cases on that date
 	 * @param total_cases_per_million total deaths per million on that date
@@ -27,80 +49,87 @@ public class DailyIncident {
 			String total_cases, String total_cases_per_million,
 			String total_deaths,String total_deaths_per_million,
 			String people_fully_vaccinated,String people_vaccinated_per_hundred)
-<span class="fc" id="L30">	{</span>
-<span class="fc" id="L31">		this.date = date;</span>
-<span class="fc" id="L32">		this.total_cases = total_cases;</span>
-<span class="fc" id="L33">		this.total_cases_per_million = total_cases_per_million;</span>
-<span class="fc" id="L34">		this.total_deaths = total_deaths;</span>
-<span class="fc" id="L35">		this.total_deaths_per_million = total_deaths_per_million;</span>
-<span class="fc" id="L36">		this.people_fully_vaccinated = people_fully_vaccinated;</span>
-<span class="fc" id="L37">		this.people_vaccinated_per_hundred = people_vaccinated_per_hundred;</span>
-<span class="fc" id="L38">	}</span>
+<span class="fc" id="L52">	{</span>
+<span class="fc" id="L53">		this.date = date;</span>
+<span class="fc" id="L54">		this.total_cases = total_cases;</span>
+<span class="fc" id="L55">		this.total_cases_per_million = total_cases_per_million;</span>
+<span class="fc" id="L56">		this.total_deaths = total_deaths;</span>
+<span class="fc" id="L57">		this.total_deaths_per_million = total_deaths_per_million;</span>
+<span class="fc" id="L58">		this.people_fully_vaccinated = people_fully_vaccinated;</span>
+<span class="fc" id="L59">		this.people_vaccinated_per_hundred = people_vaccinated_per_hundred;</span>
+<span class="fc" id="L60">	}</span>
 	
 	/**
-	 * @return return date in {@code String}, with format mm/dd/yyyy(e.g. 2/1/2020).
+	 * return date in {@code String}, with format mm/dd/yyyy(e.g. 2/1/2020).
+	 * @return date in {@code String}, with format mm/dd/yyyy(e.g. 2/1/2020).
 	 */
 	public String getDate()
 	{
-<span class="fc" id="L45">		return this.date;</span>
+<span class="fc" id="L68">		return this.date;</span>
 	}
 	
 	/**
-	 * @return return total cases in {@code String}.
+	 * return total cases in {@code String}.
+	 * @return total cases in {@code String}.
 	 */
 	public String getTotalCases()
 	{
-<span class="fc" id="L53">		return this.total_cases;</span>
+<span class="fc" id="L77">		return this.total_cases;</span>
 	}
 	
 	/**
-	 * @return return total cases per million in {@code String}.
+	 * return total cases per million in {@code String}.
+	 * @return total cases per million in {@code String}.
 	 */
 	public String getTotalCasesPerMillion()
 	{
-<span class="fc" id="L61">		return this.total_cases_per_million;</span>
+<span class="fc" id="L86">		return this.total_cases_per_million;</span>
 	}
 	
 	/**
-	 * @return return total deaths in {@code String}.
+	 * return total deaths in {@code String}.
+	 * @return total deaths in {@code String}.
 	 */
 	public String getTotalDeaths()
 	{
-<span class="fc" id="L69">		return this.total_deaths;</span>
+<span class="fc" id="L95">		return this.total_deaths;</span>
 	}
 	
 	/**
-	 * @return return total deaths per million in {@code String}.
+	 * return total deaths per million in {@code String}.
+	 * @return total deaths per million in {@code String}.
 	 */
 	public String getTotalDeathsPerMillion()
 	{
-<span class="fc" id="L77">		return this.total_deaths_per_million;</span>
+<span class="fc" id="L104">		return this.total_deaths_per_million;</span>
 	}
 	
 	/**
-	 * @return return people fully vaccinated in {@code String}.
+	 * return people fully vaccinated in {@code String}.
+	 * @return people fully vaccinated in {@code String}.
 	 */
 	public String getPeopleFullyVaccinated()
 	{
-<span class="fc" id="L85">		return this.people_fully_vaccinated;</span>
+<span class="fc" id="L113">		return this.people_fully_vaccinated;</span>
 	}
 	
 	/**
-	 * @return return people vaccinated per hundred in {@code String}.
+	 * return people vaccinated per hundred in {@code String}.
+	 * @return people vaccinated per hundred in {@code String}.
 	 */
 	public String getPeopleVaccinatedPerHundred()
 	{
-<span class="fc" id="L93">		return this.people_vaccinated_per_hundred;</span>
+<span class="fc" id="L122">		return this.people_vaccinated_per_hundred;</span>
 	}
 	
 	
 	/**
-	 * Add all the parameters together as {@code String} used to make comparison between {@code DailyIncident} objects in unit test.
-	 * @return
+	 * add all the parameters together as {@code String} used to make comparison between {@code DailyIncident} objects in unit test.
+	 * @return all the parameters get togrther in{@code String}
 	 */
 	@Override
 	public String toString() {
-<span class="fc" id="L103">		return this.date+this.people_fully_vaccinated+this.people_vaccinated_per_hundred+this.total_cases+this.total_cases_per_million+this.total_deaths+this.total_deaths_per_million;</span>
+<span class="fc" id="L132">		return this.date+this.people_fully_vaccinated+this.people_vaccinated_per_hundred+this.total_cases+this.total_cases_per_million+this.total_deaths+this.total_deaths_per_million;</span>
 	}
 	
 	

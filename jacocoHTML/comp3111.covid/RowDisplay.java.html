@@ -3,44 +3,43 @@
 import javafx.beans.property.SimpleStringProperty;
 
 /**
- * This class is used to store a row of the result table
+ * this class is used to store a row of the result table
  * one row have three columns, therefore {@code RowDisplay} is formed as three {@code String}s for the three columns
- * @author qinhanmo
- *
+ * @author ZHANG,Hao
  */
 public class RowDisplay {
  private final SimpleStringProperty firstCol;
     private final SimpleStringProperty secondCol;
     private final SimpleStringProperty thirdCol;
 
-<span class="fc" id="L16">    public RowDisplay(String firstCol, String secondCol, String thirdCol) {</span>
-<span class="fc" id="L17">        this.firstCol = new SimpleStringProperty(firstCol);</span>
-<span class="fc" id="L18">        this.secondCol = new SimpleStringProperty(secondCol);</span>
-<span class="fc" id="L19">        this.thirdCol = new SimpleStringProperty(thirdCol);</span>
-<span class="fc" id="L20">    }</span>
+<span class="fc" id="L15">    public RowDisplay(String firstCol, String secondCol, String thirdCol) {</span>
+<span class="fc" id="L16">        this.firstCol = new SimpleStringProperty(firstCol);</span>
+<span class="fc" id="L17">        this.secondCol = new SimpleStringProperty(secondCol);</span>
+<span class="fc" id="L18">        this.thirdCol = new SimpleStringProperty(thirdCol);</span>
+<span class="fc" id="L19">    }</span>
 
     public String getFirstCol() {
-<span class="fc" id="L23">        return firstCol.get();</span>
+<span class="fc" id="L22">        return firstCol.get();</span>
     }
 
     public void setFirstCol(String str) {
-<span class="nc" id="L27">     firstCol.set(str);</span>
-<span class="nc" id="L28">    }</span>
+<span class="nc" id="L26">     firstCol.set(str);</span>
+<span class="nc" id="L27">    }</span>
 
     public String getSecondCol() {
-<span class="fc" id="L31">        return secondCol.get();</span>
+<span class="fc" id="L30">        return secondCol.get();</span>
     }
 
     public void setSecondCol(String str) {
-<span class="nc" id="L35">     secondCol.set(str);</span>
-<span class="nc" id="L36">    }</span>
+<span class="nc" id="L34">     secondCol.set(str);</span>
+<span class="nc" id="L35">    }</span>
 
     public String getThirdCol() {
-<span class="fc" id="L39">        return thirdCol.get();</span>
+<span class="fc" id="L38">        return thirdCol.get();</span>
     }
 
     public void TotalCasesPerM(String str) {
-<span class="nc" id="L43">     thirdCol.set(str);</span>
-<span class="nc" id="L44">    }</span>
+<span class="nc" id="L42">     thirdCol.set(str);</span>
+<span class="nc" id="L43">    }</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105040129</span></div></body></html>

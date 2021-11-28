@@ -2,7 +2,7 @@
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-
+import javafx.stage.Stage;
 import javafx.scene.layout.AnchorPane;
 import org.controlsfx.control.CheckComboBox;
 import javafx.collections.FXCollections;
@@ -19,7 +19,7 @@ import javafx.scene.control.Alert.AlertType;
 
 
 /**
- * Controller of popUpChartB.fxml
+ * controller of popUpChartB.fxml
  * @author ZHANG,Hao
  *
  */
@@ -59,7 +59,7 @@ import javafx.scene.control.Alert.AlertType;
 
     
     /**
-     * Click the button of check date and initialize the country checkcombobox according to the dataset 
+     * click the button of check date and initialize the country checkcombobox according to the dataset 
      * if invalid dates exist, create alert according to the situation.
      * for reading country to build checkcombobox, read 
      * @see GenerateChart#setCountryNameList()
@@ -76,60 +76,85 @@ import javafx.scene.control.Alert.AlertType;
 		
 <span class="nc bnc" id="L77" title="All 4 branches missed.">		if(GenerateChartB.isDateValid(selectedStartDate) &amp;&amp; GenerateChartB.isDateValid(selectedEndDate))</span>
     	{
+        	//delete the beginning 0 at mm and dd
+        	
+<span class="nc" id="L81">        	String[] stringArray = selectedStartDate.split(&quot;/&quot;);</span>
+<span class="nc bnc" id="L82" title="All 2 branches missed.">        	if (stringArray[0].charAt(0) == '0') {</span>
+<span class="nc" id="L83">        		stringArray[0] = stringArray[0].substring(1);</span>
+        	}
+<span class="nc bnc" id="L85" title="All 2 branches missed.">        	if (stringArray[1].charAt(0) == '0') {</span>
+<span class="nc" id="L86">        		stringArray[1] = stringArray[1].substring(1);</span>
+        	}
+        	
+<span class="nc" id="L89">        	selectedStartDate = stringArray[0]+&quot;/&quot;+stringArray[1]+&quot;/&quot;+stringArray[2];</span>
+        	
+        	
+<span class="nc" id="L92">        	String[] stringArray1 = selectedEndDate.split(&quot;/&quot;);</span>
+<span class="nc bnc" id="L93" title="All 2 branches missed.">        	if (stringArray1[0].charAt(0) == '0') {</span>
+<span class="nc" id="L94">        		stringArray1[0] = stringArray1[0].substring(1);</span>
+        	}
+<span class="nc bnc" id="L96" title="All 2 branches missed.">        	if (stringArray1[1].charAt(0) == '0') {</span>
+<span class="nc" id="L97">        		stringArray1[1] = stringArray1[1].substring(1);</span>
+        	}
+        	
+<span class="nc" id="L100">        	selectedEndDate = stringArray1[0]+&quot;/&quot;+stringArray1[1]+&quot;/&quot;+stringArray1[2];</span>
 			
-<span class="nc" id="L80">			GenerateChartB.selectedStartDate = selectedStartDate;</span>
-<span class="nc" id="L81">			GenerateChartB.selectedEndDate = selectedEndDate;</span>
-<span class="nc" id="L82">			GenerateChartB.setCountryNameList();</span>
-<span class="nc" id="L83">    		ObservableList&lt;String&gt; strings = FXCollections.observableArrayList(GenerateChartB.countryNameList);</span>
+<span class="nc" id="L102">			GenerateChartB.selectedStartDate = selectedStartDate;</span>
+<span class="nc" id="L103">			GenerateChartB.selectedEndDate = selectedEndDate;</span>
+<span class="nc" id="L104">			GenerateChartB.setCountryNameList();</span>
+<span class="nc" id="L105">    		ObservableList&lt;String&gt; strings = FXCollections.observableArrayList(GenerateChartB.countryNameList);</span>
     		
-<span class="nc" id="L85">    		ccb_Cb.getItems().addAll(strings);</span>
-<span class="nc" id="L86">    		tf_startdate_Cb.setEditable(false);</span>
-<span class="nc" id="L87">    		tf_enddate_Cb.setEditable(false);</span>
-<span class="nc" id="L88">    		GenerateChartB.enterDates();</span>
+<span class="nc" id="L107">    		ccb_Cb.getItems().addAll(strings);</span>
+<span class="nc" id="L108">    		tf_startdate_Cb.setEditable(false);</span>
+<span class="nc" id="L109">    		tf_enddate_Cb.setEditable(false);</span>
+<span class="nc" id="L110">    		GenerateChartB.enterDates();</span>
     		
-<span class="nc" id="L90">    	}else</span>
+<span class="nc" id="L112">    	}else</span>
     	{
-<span class="nc" id="L92">    		boolean startDate = GenerateChartB.isDateValid(selectedStartDate);</span>
-<span class="nc" id="L93">    		boolean endDate = GenerateChartB.isDateValid(selectedEndDate);</span>
-<span class="nc bnc" id="L94" title="All 4 branches missed.">    		if (!startDate &amp;&amp; !endDate) {</span>
-<span class="nc" id="L95">    			Alert a = new Alert(AlertType.NONE); </span>
-<span class="nc" id="L96">                a.setAlertType(AlertType.ERROR); </span>
-<span class="nc" id="L97">                a.setContentText(&quot;Sorry, the Start date and End date are both invalid.&quot;);  </span>
-<span class="nc" id="L98">                a.show();</span>
-<span class="nc" id="L99">    		}</span>
-<span class="nc bnc" id="L100" title="All 4 branches missed.">    		else if(!startDate &amp;&amp; endDate) {</span>
-<span class="nc" id="L101">    			Alert a = new Alert(AlertType.NONE); </span>
-<span class="nc" id="L102">                a.setAlertType(AlertType.ERROR); </span>
-<span class="nc" id="L103">                a.setContentText(&quot;Sorry, the Start date is invalid.&quot;);  </span>
-<span class="nc" id="L104">                a.show();</span>
-<span class="nc" id="L105">    		}</span>
-<span class="nc bnc" id="L106" title="All 4 branches missed.">    		else if(startDate &amp;&amp; !endDate) {</span>
-<span class="nc" id="L107">    			Alert a = new Alert(AlertType.NONE); </span>
-<span class="nc" id="L108">                a.setAlertType(AlertType.ERROR); </span>
-<span class="nc" id="L109">                a.setContentText(&quot;Sorry, the End date is invalid.&quot;);  </span>
-<span class="nc" id="L110">                a.show();</span>
+<span class="nc" id="L114">    		boolean startDate = GenerateChartB.isDateValid(selectedStartDate);</span>
+<span class="nc" id="L115">    		boolean endDate = GenerateChartB.isDateValid(selectedEndDate);</span>
+<span class="nc bnc" id="L116" title="All 4 branches missed.">    		if (!startDate &amp;&amp; !endDate) {</span>
+<span class="nc" id="L117">    			Alert a = new Alert(AlertType.NONE); </span>
+<span class="nc" id="L118">                a.setAlertType(AlertType.ERROR); </span>
+<span class="nc" id="L119">                a.setContentText(&quot;Sorry, the Start date and End date are both invalid.&quot;);  </span>
+<span class="nc" id="L120">                a.show();</span>
+<span class="nc" id="L121">    		}</span>
+<span class="nc bnc" id="L122" title="All 4 branches missed.">    		else if(!startDate &amp;&amp; endDate) {</span>
+<span class="nc" id="L123">    			Alert a = new Alert(AlertType.NONE); </span>
+<span class="nc" id="L124">                a.setAlertType(AlertType.ERROR); </span>
+<span class="nc" id="L125">                a.setContentText(&quot;Sorry, the Start date is invalid.&quot;);  </span>
+<span class="nc" id="L126">                a.show();</span>
+<span class="nc" id="L127">    		}</span>
+<span class="nc bnc" id="L128" title="All 4 branches missed.">    		else if(startDate &amp;&amp; !endDate) {</span>
+<span class="nc" id="L129">    			Alert a = new Alert(AlertType.NONE); </span>
+<span class="nc" id="L130">                a.setAlertType(AlertType.ERROR); </span>
+<span class="nc" id="L131">                a.setContentText(&quot;Sorry, the End date is invalid.&quot;);  </span>
+<span class="nc" id="L132">                a.show();</span>
     		}
     	}
 		
-<span class="nc" id="L114">    }</span>
+<span class="nc" id="L136">    }</span>
 
     /**
-     * Click the Reset button to edit date
+     * click the Reset button to edit date
      * @param event Operation on GUI
      */
     @FXML
     void doResetCb(ActionEvent event) {
-<span class="nc" id="L122">    	tf_enddate_Cb.setEditable(true);</span>
-<span class="nc" id="L123">    	tf_enddate_Cb.setText(&quot;&quot;);</span>
-<span class="nc" id="L124">    	tf_startdate_Cb.setEditable(true);</span>
-<span class="nc" id="L125">    	tf_startdate_Cb.setText(&quot;&quot;);  	</span>
-    	
-<span class="nc" id="L127">		GenerateChartB.enteredDates = false;</span>
-<span class="nc" id="L128">    }</span>
+<span class="nc" id="L144">    	 tf_enddate_Cb.setEditable(true);</span>
+<span class="nc" id="L145">         tf_enddate_Cb.setText(&quot;&quot;);</span>
+<span class="nc" id="L146">         tf_startdate_Cb.setEditable(true);</span>
+<span class="nc" id="L147">         tf_startdate_Cb.setText(&quot;&quot;);</span>
+<span class="nc" id="L148">         ccb_Cb.getCheckModel().clearChecks();</span>
+<span class="nc" id="L149">         ccb_Cb.getItems().clear();</span>
+<span class="nc" id="L150">         GenerateChartB.enteredDates = false;</span>
+<span class="nc" id="L151">         GenerateChartB.errMsg = &quot;&quot;;</span>
+<span class="nc" id="L152">         GenerateChartB.missingDate = &quot;&quot;;</span>
+<span class="nc" id="L153">    }</span>
 
     
     /**
-     * Click Generate Chart button to create chart of task  A
+     * click Generate Chart button to create chart of task  A
      * create Alert if not checking dates.
      * create Alert with error message when the time of period is out of country data.
      * for chart creation, see {@link GenerateChart}
@@ -137,25 +162,36 @@ import javafx.scene.control.Alert.AlertType;
      */
     @FXML
     void doSearchChartB(ActionEvent event) {
-<span class="nc bnc" id="L140" title="All 2 branches missed.">    	if(!GenerateChartB.enteredDates) {</span>
-<span class="nc" id="L141">    		Alert a = new Alert(AlertType.NONE); </span>
-<span class="nc" id="L142">            a.setAlertType(AlertType.ERROR); </span>
-<span class="nc" id="L143">            a.setContentText(&quot;Sorry, please check Dates first.&quot;);  </span>
-<span class="nc" id="L144">            a.show();</span>
-<span class="nc" id="L145">            return;</span>
+<span class="nc bnc" id="L165" title="All 2 branches missed.">    	if(!GenerateChartB.enteredDates) {</span>
+<span class="nc" id="L166">    		Alert a = new Alert(AlertType.NONE); </span>
+<span class="nc" id="L167">            a.setAlertType(AlertType.ERROR); </span>
+<span class="nc" id="L168">            a.setContentText(&quot;Sorry, please check Dates first.&quot;);  </span>
+<span class="nc" id="L169">            a.show();</span>
+<span class="nc" id="L170">            return;</span>
     	}
-<span class="nc" id="L147">    	GenerateChartB.selectedCountryList = ccb_Cb.getCheckModel().getCheckedItems();</span>
-<span class="nc" id="L148">    	GenerateChartB.setDataList();</span>
-<span class="nc" id="L149">    	GenerateChartB.setToPlot();</span>
-<span class="nc" id="L150">    	GenerateChartB.createChart();</span>
-<span class="nc bnc" id="L151" title="All 2 branches missed.">    	if(!GenerateChartB.errMsg.equals(&quot;&quot;)) {</span>
-<span class="nc" id="L152">    		Alert a = new Alert(AlertType.NONE); </span>
-<span class="nc" id="L153">            a.setAlertType(AlertType.WARNING); </span>
-<span class="nc" id="L154">            a.setContentText(&quot;The country(s) only has the information of the following period(s) \n&quot;+GenerateChartB.errMsg+&quot;\0&quot;);  </span>
-<span class="nc" id="L155">            a.show();</span>
-    	}
-    		
-<span class="nc" id="L158">    }</span>
+<span class="nc" id="L172">    	GenerateChartB.selectedCountryList = ccb_Cb.getCheckModel().getCheckedItems();</span>
+<span class="nc" id="L173">    	GenerateChartB.setDataList();</span>
+<span class="nc" id="L174">    	GenerateChartB.setToPlot();</span>
+<span class="nc" id="L175">    	GenerateChartB.createChart();</span>
+<span class="nc" id="L176">    	String outputMessage = &quot;&quot;;</span>
+<span class="nc bnc" id="L177" title="All 2 branches missed.">		if (!GenerateChartB.errMsg.equals(&quot;&quot;)) {</span>
+<span class="nc" id="L178">			outputMessage = &quot;The country(s) only has the information of the following period(s) \n&quot;+GenerateChartB.errMsg;</span>
+		}
+<span class="nc bnc" id="L180" title="All 2 branches missed.">		if(!GenerateChartB.missingDate.equals(&quot;&quot;)) {</span>
+<span class="nc" id="L181">			outputMessage = outputMessage+&quot;\n\n&quot;+&quot;The following data is missing\n&quot;+GenerateChartB.missingDate;</span>
+		}
+<span class="nc bnc" id="L183" title="All 2 branches missed.">		if(!outputMessage.equals(&quot;&quot;)) {</span>
+<span class="nc" id="L184">			TextArea a = new TextArea();</span>
+<span class="nc" id="L185">			a.setText(outputMessage);</span>
+
+<span class="nc" id="L187">			a.setEditable(false);</span>
+<span class="nc" id="L188">			Scene scene = new Scene(a);</span>
+<span class="nc" id="L189">			Stage stage = new Stage();</span>
+<span class="nc" id="L190">			stage.setTitle(&quot;The valid input data period or/and missing data.&quot;);</span>
+<span class="nc" id="L191">			stage.setScene(scene);</span>
+<span class="nc" id="L192">			stage.show();</span>
+		}
+<span class="nc" id="L194">    }</span>
 
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105040129</span></div></body></html>
